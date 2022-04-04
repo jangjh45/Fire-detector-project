@@ -5,7 +5,7 @@ import glob
 from rmfile import *     #이전 detect파일 삭제
 import time
 
-rtsp_PATH = 'rtsp://192.168.0.11:8555/unicast'
+rtsp_PATH = 'rtsp://192.168.1.202:8555/unicast'
 dir_PATH = 'C:/yolov5-master/runs'
 labels_PATH = 'C:/yolov5-master/runs/detect/exp/labels'
 txt_PATH = 'C:/yolov5-master/runs/detect/exp/labels/*.txt'
@@ -88,8 +88,8 @@ while(True):
         int((float(xywh2_1R[24:29]))*frame_H)),
         (0,0,255), 2)
         cv2.putText(frame, cv_text,
-        (int((float(xywh1_1R[6:11])*frame_W)-((float(xywh1_1R[18:23])/2)*frame_W)),
-        int((float(xywh1_1R[12:17])*frame_H)-((float(xywh1_1R[24:29])/2)*frame_H))), 
+        (int((float(xywh2_1R[6:11])*frame_W)-((float(xywh2_1R[18:23])/2)*frame_W)),
+        int((float(xywh2_1R[12:17])*frame_H)-((float(xywh2_1R[24:29])/2)*frame_H))), 
         cv2.FONT_HERSHEY_SIMPLEX, 0.9,
         (0, 0, 255), 2, cv2.LINE_AA)
 
@@ -100,8 +100,8 @@ while(True):
         int((float(xywh2_2R[24:29]))*frame_H)),
         (0,0,255), 2)
         cv2.putText(frame, cv_text,
-        (int((float(xywh1_1R[6:11])*frame_W)-((float(xywh1_1R[18:23])/2)*frame_W)),
-        int((float(xywh1_1R[12:17])*frame_H)-((float(xywh1_1R[24:29])/2)*frame_H))), 
+        (int((float(xywh2_2R[6:11])*frame_W)-((float(xywh2_2R[18:23])/2)*frame_W)),
+        int((float(xywh2_2R[12:17])*frame_H)-((float(xywh2_2R[24:29])/2)*frame_H))), 
         cv2.FONT_HERSHEY_SIMPLEX, 0.9,
         (0, 0, 255), 2, cv2.LINE_AA)
 
@@ -113,8 +113,8 @@ while(True):
         int((float(xywh3_1R[24:29]))*frame_H)),
         (0,0,255), 2)
         cv2.putText(frame, cv_text,
-        (int((float(xywh1_1R[6:11])*frame_W)-((float(xywh1_1R[18:23])/2)*frame_W)),
-        int((float(xywh1_1R[12:17])*frame_H)-((float(xywh1_1R[24:29])/2)*frame_H))), 
+        (int((float(xywh3_1R[6:11])*frame_W)-((float(xywh3_1R[18:23])/2)*frame_W)),
+        int((float(xywh3_1R[12:17])*frame_H)-((float(xywh3_1R[24:29])/2)*frame_H))), 
         cv2.FONT_HERSHEY_SIMPLEX, 0.9,
         (0, 0, 255), 2, cv2.LINE_AA)
 
@@ -125,8 +125,8 @@ while(True):
         int((float(xywh3_2R[24:29]))*frame_H)),
         (0,0,255), 2)
         cv2.putText(frame, cv_text,
-        (int((float(xywh1_1R[6:11])*frame_W)-((float(xywh1_1R[18:23])/2)*frame_W)),
-        int((float(xywh1_1R[12:17])*frame_H)-((float(xywh1_1R[24:29])/2)*frame_H))), 
+        (int((float(xywh3_2R[6:11])*frame_W)-((float(xywh3_2R[18:23])/2)*frame_W)),
+        int((float(xywh3_2R[12:17])*frame_H)-((float(xywh3_2R[24:29])/2)*frame_H))), 
         cv2.FONT_HERSHEY_SIMPLEX, 0.9,
         (0, 0, 255), 2, cv2.LINE_AA)
 
@@ -137,8 +137,8 @@ while(True):
         int((float(xywh3_3R[24:29]))*frame_H)),
         (0,0,255), 2)
         cv2.putText(frame, cv_text,
-        (int((float(xywh1_1R[6:11])*frame_W)-((float(xywh1_1R[18:23])/2)*frame_W)),
-        int((float(xywh1_1R[12:17])*frame_H)-((float(xywh1_1R[24:29])/2)*frame_H))), 
+        (int((float(xywh3_3R[6:11])*frame_W)-((float(xywh3_3R[18:23])/2)*frame_W)),
+        int((float(xywh3_3R[12:17])*frame_H)-((float(xywh3_3R[24:29])/2)*frame_H))), 
         cv2.FONT_HERSHEY_SIMPLEX, 0.9,
         (0, 0, 255), 2, cv2.LINE_AA)
     else:
