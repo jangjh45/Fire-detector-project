@@ -1,0 +1,13 @@
+(RTSP실행)
+sudo ./h264_v4l2_rtspserver/v4l2rtspserver -F 25 -W 640 -H 480 -P 8555 /dev/video0
+
+(RTSP YOLO실행)
+python detect.py --source "rtsp://192.168.0.11:8555/unicast" --weights weights/best.pt --conf 0.5 --save-txt
+
+(webcam)
+python detect.py --source 0 --weights ./weights/best.pt --conf 0.6 --save-txt
+
+(cv2 PATH)
+import sys
+sys.path.append('C:/Users/iOT/AppData/Local/Programs/Python/Python310/Lib/site-packages')
+sys.path.append('/home/jangjh45/anaconda3/envs/yolo/lib/python3.7/site-packages')

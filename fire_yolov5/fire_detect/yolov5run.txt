@@ -1,0 +1,12 @@
+python train.py --batch 64 --epochs 100 --data ./data/fire.yaml --cfg ./models/yolov5m.yaml --weights yolov5m.pt --name firede
+
+!python train.py --img 416 --batch 32 --epochs 200 --data /content/dataset/data.yaml --cfg ./models/yolov5s.yaml --weights yolov5s.pt --name fire_yolo
+
+(image)
+python detect.py --source fire_data/fire1.jpg --weights ./weights/best.pt --conf 0.6 --save-txt
+
+(video)
+python detect.py --source fire_data/fire1.mp4 --weights ./weights/best.pt --conf 0.6 --save-txt
+
+(webcam)
+python detect.py --source 0 --weights ./weights/best.pt --conf 0.6 --save-txt
