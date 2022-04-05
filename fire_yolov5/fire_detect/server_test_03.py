@@ -64,7 +64,7 @@ class ServerSocket:
         return buf
 
 def main():
-    server = ServerSocket('20.39.201.16', 50010)
+    server = ServerSocket('localhost', 5004)
 
 if __name__ == "__main__":
     main()
