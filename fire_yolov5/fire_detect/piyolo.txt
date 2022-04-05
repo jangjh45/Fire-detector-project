@@ -2,7 +2,7 @@
 sudo ./h264_v4l2_rtspserver/v4l2rtspserver -F 25 -W 640 -H 480 -P 8555 /dev/video0
 
 (RTSP YOLO실행)
-python detect.py --source "rtsp://192.168.0.11:8555/unicast" --weights weights/best.pt --conf 0.5 --save-txt --nosave
+python detect.py --source "rtsp://192.168.0.11:8555/unicast" --weights weights/best.pt --conf 0.5 --save-txt
 
 (webcam)
 python detect.py --source 0 --weights ./weights/best.pt --conf 0.6 --save-txt
