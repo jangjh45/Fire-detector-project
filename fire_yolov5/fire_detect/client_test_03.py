@@ -201,8 +201,8 @@ class ClientVideoSocket:
             self.sendImages()
 
 def main():
-    TCP_IP = 'localhost'
-    TCP_PORT = 5004
+    TCP_IP = '20.39.201.16'
+    TCP_PORT = 5008
     video_path = 'rtsp://192.168.0.11:8555/unicast'
     client = ClientVideoSocket(TCP_IP, TCP_PORT, video_path)
 
