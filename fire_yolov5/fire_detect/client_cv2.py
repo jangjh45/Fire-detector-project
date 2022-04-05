@@ -4,6 +4,8 @@ import numpy as np
 import glob
 from rmfile import *     #이전 detect파일 삭제
 import time
+import socket
+import numpy
 
 rtsp_PATH = 'rtsp://192.168.0.11:8555/unicast'
 dir_PATH = 'C:/yolov5-master/runs'
@@ -143,6 +145,7 @@ while(True):
         (0, 0, 255), 2, cv2.LINE_AA)
     else:
         continue
+
     cv2.imshow("fire_detect_video", frame)
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
