@@ -5,7 +5,7 @@ import glob
 from rmfile import *     #이전 detect파일 삭제
 import time
 
-rtsp_PATH = 'rtsp://192.168.0.11:50037/unicast'
+rtsp_PATH = 'rtsp://192.168.1.202:50037/unicast'
 dir_PATH = 'C:/yolov5-master/runs'
 labels_PATH = 'C:/yolov5-master/runs/detect/exp/labels'
 txt_PATH = 'C:/yolov5-master/runs/detect/exp/labels/*.txt'
@@ -41,7 +41,7 @@ while(True):
         if txt_len == 1:
             xywh1 = y.read().splitlines()
             xywh1_1R = xywh1[0]
-            print(xywh1_1R)
+            # print(xywh1_1R)
             # print(xywh1_1R[6:11])
             # print(xywh1_1R[12:17])
             # print(xywh1_1R[18:23])
@@ -52,16 +52,16 @@ while(True):
             xywh2 = y.read().splitlines()
             xywh2_1R = xywh2[0]
             xywh2_2R = xywh2[1]
-            print(xywh2_1R)
-            print(xywh2_2R)
+            # print(xywh2_1R)
+            # print(xywh2_2R)
         elif txt_len == 3:
             xywh3 = y.read().splitlines()
             xywh3_1R = xywh3[0]
             xywh3_2R = xywh3[1]
             xywh3_3R = xywh3[2]
-            print(xywh3_1R)
-            print(xywh3_2R)
-            print(xywh3_3R)
+            # print(xywh3_1R)
+            # print(xywh3_2R)
+            # print(xywh3_3R)
         else:
             continue
         y.close()
@@ -146,9 +146,4 @@ while(True):
     cv2.imshow("fire_detect_video", frame)
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
-
-
-
-
-
-    # time.sleep(1)
+    #time.sleep(0.01)

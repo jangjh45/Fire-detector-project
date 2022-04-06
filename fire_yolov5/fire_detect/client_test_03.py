@@ -10,7 +10,7 @@ import os
 import glob
 from rmfile import *
 
-rtsp_PATH = 'rtsp://192.168.0.11:8555/unicast'
+rtsp_PATH = 'rtsp://192.168.1.202:50037/unicast'
 dir_PATH = 'C:/yolov5-master/runs'
 labels_PATH = 'C:/yolov5-master/runs/detect/exp/labels'
 txt_PATH = 'C:/yolov5-master/runs/detect/exp/labels/*.txt'
@@ -201,7 +201,7 @@ class ClientVideoSocket:
             self.sendImages()
 
 def main():
-    TCP_IP = 'localhost'
+    TCP_IP = '20.39.201.16'
     TCP_PORT = 50038
     video_path = 'rtsp://192.168.1.202:50037/unicast'
     client = ClientVideoSocket(TCP_IP, TCP_PORT, video_path)
