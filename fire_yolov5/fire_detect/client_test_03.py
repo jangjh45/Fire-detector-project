@@ -1,6 +1,4 @@
-import pickle
 import socket
-import struct
 import cv2
 import numpy
 import sys
@@ -10,7 +8,7 @@ import os
 import glob
 from rmfile import *
 
-rtsp_PATH = 'rtsp://192.168.0.11:8555/unicast'
+rtsp_PATH = 'rtsp://192.168.1.202:50037/unicast'
 dir_PATH = 'C:/yolov5-master/runs'
 labels_PATH = 'C:/yolov5-master/runs/detect/exp/labels'
 txt_PATH = 'C:/yolov5-master/runs/detect/exp/labels/*.txt'
@@ -85,16 +83,16 @@ class ClientVideoSocket:
                         xywh2 = y.read().splitlines()
                         xywh2_1R = xywh2[0]
                         xywh2_2R = xywh2[1]
-                        print(xywh2_1R)
-                        print(xywh2_2R)
+                        # print(xywh2_1R)
+                        # print(xywh2_2R)
                     elif txt_len == 3:
                         xywh3 = y.read().splitlines()
                         xywh3_1R = xywh3[0]
                         xywh3_2R = xywh3[1]
                         xywh3_3R = xywh3[2]
-                        print(xywh3_1R)
-                        print(xywh3_2R)
-                        print(xywh3_3R)
+                        # print(xywh3_1R)
+                        # print(xywh3_2R)
+                        # print(xywh3_3R)
                     else:
                         continue
                     y.close()
@@ -201,9 +199,9 @@ class ClientVideoSocket:
             self.sendImages()
 
 def main():
-    TCP_IP = 'localhost'
-    TCP_PORT = 5004
-    video_path = 'rtsp://192.168.0.11:8555/unicast'
+    TCP_IP = '20.39.201.16'
+    TCP_PORT = 50038
+    video_path = 'rtsp://192.168.1.202:50037/unicast'
     client = ClientVideoSocket(TCP_IP, TCP_PORT, video_path)
 
 if __name__ == "__main__":

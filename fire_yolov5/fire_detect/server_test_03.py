@@ -1,6 +1,4 @@
-import pickle
 import socket
-import struct
 import cv2
 import numpy
 import sys
@@ -64,7 +62,7 @@ class ServerSocket:
         return buf
 
 def main():
-    server = ServerSocket('localhost', 5004)
+    server = ServerSocket('localhost', 8080)
 
 if __name__ == "__main__":
     main()
