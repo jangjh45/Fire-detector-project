@@ -2,8 +2,8 @@ import os
 import cv2
 import numpy as np
 import glob
-from rmfile import *     #이전 detect파일 삭제
 import time
+from rmfile import *
 
 rtsp_PATH = 'http://192.168.0.11:50036/?action=stream'
 dir_PATH = 'C:/yolov5-master/runs'
