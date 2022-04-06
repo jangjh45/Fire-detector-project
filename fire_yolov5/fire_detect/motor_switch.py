@@ -26,7 +26,7 @@ while(True):
     
     label_list1 = sorted(glob.glob(txt_PATH), key=os.path.getctime, reverse=True)
     first_list = label_list1[0]
-    time.sleep(5)
+    time.sleep(2)
     label_list2 = sorted(glob.glob(txt_PATH), key=os.path.getctime, reverse=True)
     second_list = label_list2[0]     
     print(first_list)
