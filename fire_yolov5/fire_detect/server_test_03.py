@@ -1,6 +1,4 @@
-import pickle
 import socket
-import struct
 import cv2
 import numpy
 import sys

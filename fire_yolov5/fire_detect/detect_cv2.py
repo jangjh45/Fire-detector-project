@@ -5,7 +5,7 @@ import glob
 from rmfile import *     #이전 detect파일 삭제
 import time
 
-rtsp_PATH = 'http://192.168.1.202:50036/?action=stream'
+rtsp_PATH = 'http://192.168.0.11:50036/?action=stream'
 dir_PATH = 'C:/yolov5-master/runs'
 labels_PATH = 'C:/yolov5-master/runs/detect/exp/labels'
 txt_PATH = 'C:/yolov5-master/runs/detect/exp/labels/*.txt'
@@ -259,8 +259,6 @@ while(True):
         int((float(xywh5_5R[12:17])*frame_H)-((float(xywh5_5R[24:29])/2)*frame_H))), 
         cv2.FONT_HERSHEY_SIMPLEX, 0.9,
         (0, 0, 255), 2, cv2.LINE_AA)
-
-    elif 
 
     else:
         continue

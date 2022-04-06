@@ -1,6 +1,4 @@
-import pickle
 import socket
-import struct
 import cv2
 import numpy
 import sys
@@ -85,16 +83,16 @@ class ClientVideoSocket:
                         xywh2 = y.read().splitlines()
                         xywh2_1R = xywh2[0]
                         xywh2_2R = xywh2[1]
-                        print(xywh2_1R)
-                        print(xywh2_2R)
+                        # print(xywh2_1R)
+                        # print(xywh2_2R)
                     elif txt_len == 3:
                         xywh3 = y.read().splitlines()
                         xywh3_1R = xywh3[0]
                         xywh3_2R = xywh3[1]
                         xywh3_3R = xywh3[2]
-                        print(xywh3_1R)
-                        print(xywh3_2R)
-                        print(xywh3_3R)
+                        # print(xywh3_1R)
+                        # print(xywh3_2R)
+                        # print(xywh3_3R)
                     else:
                         continue
                     y.close()
