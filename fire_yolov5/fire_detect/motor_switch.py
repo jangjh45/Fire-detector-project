@@ -26,7 +26,7 @@ while(True):
     
     label_list1 = sorted(glob.glob(txt_PATH), key=os.path.getctime, reverse=True)
     first_list = label_list1[0]
-    time.sleep(2)
+    time.sleep(5)
     label_list2 = sorted(glob.glob(txt_PATH), key=os.path.getctime, reverse=True)
     second_list = label_list2[0]     
     print(first_list)
@@ -46,11 +46,11 @@ while(True):
         print(non_fire_count)
         print('\n')
     
-    if fire_count >= 5 and non_fire_count == 0:
+    if fire_count >= 3 and non_fire_count == 0:
         print("화재 발생!!")
-    elif fire_count < 5 and non_fire_count < 5:
+    elif fire_count < 3 and non_fire_count < 3:
         print("상황파악중") 
     else:
-        non_fire_count >= 5 and fire_count == 0
+        non_fire_count >= 3 and fire_count == 0
         print("화재 상황 종료")
     
