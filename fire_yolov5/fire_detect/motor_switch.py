@@ -24,11 +24,10 @@ while(True):
     if file_count == 0: #폴더안에 좌표값txt가 없으면 아래 코드 무시 1개이상 있으면 아래 코드 실행
         continue
     
-    label_list1 = sorted(glob.glob(txt_PATH), key=os.path.getctime, reverse=True)
-    first_list = label_list1[0]
+    label_list = sorted(glob.glob(txt_PATH), key=os.path.getctime, reverse=True)
+    first_list = label_list[0]
     time.sleep(5)
-    label_list2 = sorted(glob.glob(txt_PATH), key=os.path.getctime, reverse=True)
-    second_list = label_list2[0]     
+    second_list = label_list[0]     
     print(first_list)
     print(second_list)
     
