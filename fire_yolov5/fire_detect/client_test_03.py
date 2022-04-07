@@ -51,26 +51,19 @@ class ClientVideoSocket:
             while(True):
                 dir_list = os.listdir(dir_PATH)
                 dir_count = len(dir_list)
-                #print(dir_count)
                 if dir_count == 0: #폴더가 없으면 아래 코드 무시 1개이상 있으면 아래 코드 실행
                     continue
-                #time.sleep(0.01)
+                
                 file_list = os.listdir(labels_PATH)
                 file_count = len(file_list)
-                #print(file_count)
                 if file_count < 6: #폴더안에 좌표값txt가 없으면 아래 코드 무시 1개이상 있으면 아래 코드 실행
                     continue
-                #time.sleep(0.01)
+                
                 label_list = sorted(glob.glob(txt_PATH), key=os.path.getctime, reverse=True)
                 first_list = label_list[0] #label폴더에서 마지막생성 좌표 경로 리스트 저장
-                #print(first_list)
-                label_list2 = sorted(glob.glob(txt_PATH), key=os.path.getctime, reverse=True)
-                second_list = label_list2[3]
-                #print(second_list)
-
+                
                 with open(first_list) as a:   #txt파일을 읽어 각 행 개수 파악
                     txt_len = len(a.readlines())
-                    #print(txt_len)
                     a.close()
                 
                 with open(first_list) as b: #txt파일을 읽어 각 행 좌표를 리스트에 저장
