@@ -1,8 +1,16 @@
 import os
 import glob
 import time
+import pymysql
 
-time.sleep(2)
+time.sleep(5)
+
+# 전역변수 선언부 
+db = None 
+cur = None
+
+conn = pymysql.connect(host='192.168.1.202', user='root', password='1234', charset='utf8', db='detect') #DB 연결
+cur = conn.cursor() #디폴트 커서 생성
 
 dir_PATH = 'C:/yolov5-master/runs'
 labels_PATH = 'C:/yolov5-master/runs/detect/exp/labels'
@@ -12,6 +20,11 @@ fire_count = 0
 non_fire_count = 0
 
 while(True):
+    # secs = time.time()
+    # tm = time.localtime(secs)
+    # string = time.strftime('%Y-%m-%d %I:%M:%S', tm)
+    # print(string)
+
     dir_list = os.listdir(dir_PATH)
     dir_count = len(dir_list)
     #print(dir_count)
@@ -27,7 +40,8 @@ while(True):
     label_list = sorted(glob.glob(txt_PATH), key=os.path.getctime, reverse=True)
     first_list = label_list[0]
     time.sleep(5)
-    second_list = label_list[0]     
+    label_list2 = sorted(glob.glob(txt_PATH), key=os.path.getctime, reverse=True)
+    second_list = label_list2[0]     
     print(first_list)
     print(second_list)
     
@@ -46,10 +60,15 @@ while(True):
         print('\n')
     
     if fire_count >= 3 and non_fire_count == 0:
+        sql = "INSERT INTO detect_table (state, TIME) VALUES ('fire', NOW());"
         print("화재 발생!!")
     elif fire_count < 3 and non_fire_count < 3:
+        sql = "INSERT INTO detect_table (state, time) VALUES ('loading', NOW());"
         print("상황파악중") 
     else:
         non_fire_count >= 3 and fire_count == 0
+        sql = "INSERT INTO detect_table (state, time) VALUES ('non_fire', NOW());"
         print("화재 상황 종료")
-    
+    cur.execute(sql)
+    conn.commit()
+    print('rowcount: ', cur.rowcount)
