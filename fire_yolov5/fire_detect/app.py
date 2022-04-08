@@ -1,3 +1,4 @@
+# from flask import Flask, request, Response, stream_with_context, render_template
 import socket
 import cv2
 import numpy
@@ -6,7 +7,8 @@ from datetime import datetime
 import time
 import base64
 import threading
-
+from server_test_03 import *
+test1 = 0
 class ServerSocket:
 
     def __init__(self, ip, port):
@@ -29,7 +31,6 @@ class ServerSocket:
         print(u'Server socket [ TCP_IP: ' + self.TCP_IP + ', TCP_PORT: ' + str(self.TCP_PORT) + ' ] is connected with client')
 
     def receiveImages(self):
-        global decimg
         try:
             while True:
                 length = self.recvall(self.conn, 64)
@@ -41,6 +42,7 @@ class ServerSocket:
                 print('receive time: ' + datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S.%f'))
                 data = numpy.frombuffer(base64.b64decode(stringData), numpy.uint8)
                 decimg = cv2.imdecode(data, 1)
+                test1 = decimg
                 cv2.imshow("image", decimg)
                 if cv2.waitKey(1) & 0xFF == ord('q'):
                     break
@@ -61,8 +63,13 @@ class ServerSocket:
             count -= len(newbuf)
         return buf
 
-def main():
-    server = ServerSocket('192.168.1.202', 50055)
+a = ServerSocket('localhost', 50055)
 
-if __name__ == "__main__":
-    main()
+while True:
+    print(test1)
+
+# if __name__ == "__main__":
+#     main()
+
+
+

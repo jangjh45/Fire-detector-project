@@ -14,11 +14,6 @@ txt_PATH = 'C:/yolov5-master/runs/detect/exp/labels/*.txt'
 cv_text = 'fire'
 loading = 'waiting to be detected'
 
-frame_W = 640
-frame_H = 480
-
-stop_count = 0
-
 class ClientVideoSocket:
     def __init__(self, ip, port, video_path):
         self.TCP_SERVER_IP = ip
@@ -45,7 +40,10 @@ class ClientVideoSocket:
             self.connectServer()
 
     def sendImages(self):
+        frame_W = 640
+        frame_H = 480
         cnt = 0
+        stop_count = 0
         capture = cv2.VideoCapture(self.video_path)
         try:
             while(True):
@@ -336,8 +334,8 @@ class ClientVideoSocket:
             self.sendImages()
 
 def main():
-    TCP_IP = '192.168.1.202'
-    TCP_PORT = 50035
+    TCP_IP = 'localhost'
+    TCP_PORT = 50055
     video_path = 'http://192.168.1.202:50036/?action=stream'
     client = ClientVideoSocket(TCP_IP, TCP_PORT, video_path)
 

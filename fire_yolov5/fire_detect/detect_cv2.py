@@ -5,7 +5,7 @@ import glob
 import time
 from rmfile import *
 
-rtsp_PATH = 'http://192.168.0.11:50036/?action=stream'
+rtsp_PATH = 'http://192.168.1.202:50036/?action=stream'
 dir_PATH = 'C:/yolov5-master/runs'
 labels_PATH = 'C:/yolov5-master/runs/detect/exp/labels'
 txt_PATH = 'C:/yolov5-master/runs/detect/exp/labels/*.txt'
@@ -15,9 +15,7 @@ loading = 'waiting to be detected'
 cap = cv2.VideoCapture(rtsp_PATH)
 frame_W = 640
 frame_H = 480
-
 stop_count = 0
-
 
 while(True):
     dir_list = os.listdir(dir_PATH)
