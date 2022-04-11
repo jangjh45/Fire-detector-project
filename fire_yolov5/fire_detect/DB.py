@@ -3,8 +3,6 @@ import glob
 import time
 import pymysql
 
-time.sleep(5)
-
 # 전역변수 선언부 
 db = None 
 cur = None
@@ -39,7 +37,7 @@ while(True):
     
     label_list = sorted(glob.glob(txt_PATH), key=os.path.getctime, reverse=True)
     first_list = label_list[0]
-    time.sleep(5)
+    time.sleep(2)
     label_list2 = sorted(glob.glob(txt_PATH), key=os.path.getctime, reverse=True)
     second_list = label_list2[0]     
     print(first_list)

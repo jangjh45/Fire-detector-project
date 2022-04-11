@@ -1,75 +1,313 @@
-# from flask import Flask, request, Response, stream_with_context, render_template
-import socket
+from rmfile import *
+from flask import Flask
+from flask import render_template
+from flask import Response
+import os
 import cv2
-import numpy
-import sys
-from datetime import datetime
+import numpy as np
+import glob
 import time
-import base64
-import threading
-from server_test_03 import *
-test1 = 0
-class ServerSocket:
 
-    def __init__(self, ip, port):
-        self.TCP_IP = ip
-        self.TCP_PORT = port
-        self.socketOpen()
-        self.receiveThread = threading.Thread(target=self.receiveImages)
-        self.receiveThread.start()
+app = Flask(__name__)
 
-    def socketClose(self):
-        self.sock.close()
-        print(u'Server socket [ TCP_IP: ' + self.TCP_IP + ', TCP_PORT: ' + str(self.TCP_PORT) + ' ] is close')
+rtsp_PATH = 'http://192.168.1.202:50036/?action=stream'
+dir_PATH = 'C:/yolov5-master/runs'
+labels_PATH = 'C:/yolov5-master/runs/detect/exp/labels'
+txt_PATH = 'C:/yolov5-master/runs/detect/exp/labels/*.txt'
+cv_text = 'fire'
+loading = 'waiting to be detected'
 
-    def socketOpen(self):
-        self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.sock.bind((self.TCP_IP, self.TCP_PORT))
-        self.sock.listen(1)
-        print(u'Server socket [ TCP_IP: ' + self.TCP_IP + ', TCP_PORT: ' + str(self.TCP_PORT) + ' ] is open')
-        self.conn, self.addr = self.sock.accept()
-        print(u'Server socket [ TCP_IP: ' + self.TCP_IP + ', TCP_PORT: ' + str(self.TCP_PORT) + ' ] is connected with client')
+cap = cv2.VideoCapture(rtsp_PATH)
+frame_W = 640
+frame_H = 480
+stop_count = 0
 
-    def receiveImages(self):
-        try:
-            while True:
-                length = self.recvall(self.conn, 64)
-                length1 = length.decode('utf-8')
-                stringData = self.recvall(self.conn, int(length1))
-                stime = self.recvall(self.conn, 64)
-                print('send time: ' + stime.decode('utf-8'))
-                now = time.localtime()
-                print('receive time: ' + datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S.%f'))
-                data = numpy.frombuffer(base64.b64decode(stringData), numpy.uint8)
-                decimg = cv2.imdecode(data, 1)
-                test1 = decimg
-                cv2.imshow("image", decimg)
-                if cv2.waitKey(1) & 0xFF == ord('q'):
-                    break
-        except Exception as e:
-            print(e)
-            self.socketClose()
-            cv2.destroyAllWindows()
-            self.socketOpen()
-            self.receiveThread = threading.Thread(target=self.receiveImages)
-            self.receiveThread.start()
+def detect():
+    global cap, frame_H, frame_W, stop_count
+    while(True):
+        dir_list = os.listdir(dir_PATH)
+        dir_count = len(dir_list)
+        if dir_count == 0: #폴더가 없으면 아래 코드 무시 1개이상 있으면 아래 코드 실행
+            continue
 
-    def recvall(self, sock, count):
-        buf = b''
-        while count:
-            newbuf = sock.recv(count)
-            if not newbuf: return None
-            buf += newbuf
-            count -= len(newbuf)
-        return buf
+        file_list = os.listdir(labels_PATH)
+        file_count = len(file_list)
+        if file_count < 6: #폴더안에 좌표값txt가 없으면 아래 코드 무시 1개이상 있으면 아래 코드 실행
+            continue
+        
+        label_list = sorted(glob.glob(txt_PATH), key=os.path.getctime, reverse=True)
+        first_list = label_list[0] #label폴더에서 마지막생성 좌표 경로 리스트 저장
 
-a = ServerSocket('localhost', 50055)
+        with open(first_list) as a:   #txt파일을 읽어 각 행 개수 파악
+            txt_len = len(a.readlines())
+            a.close()
+        
+        with open(first_list) as b: #txt파일을 읽어 각 행 좌표를 리스트에 저장
+            if txt_len == 1:
+                xywh1 = b.read().splitlines()
+                xywh1_1R = xywh1[0]
+                # print(xywh1_1R)
+                # print(xywh1_1R[6:11])
+                # print(xywh1_1R[12:17])
+                # print(xywh1_1R[18:23])
+                # print(xywh1_1R[24:29])
+                # print(float(xywh1_1R[6:11])*frame_H)
+                # print(int((float(xywh1_1R[6:11])*frame_W)-((float(xywh1_1R[18:23])/2)*frame_W)))
+            elif txt_len == 2:
+                xywh2 = b.read().splitlines()
+                xywh2_1R = xywh2[0]
+                xywh2_2R = xywh2[1]
+            elif txt_len == 3:
+                xywh3 = b.read().splitlines()
+                xywh3_1R = xywh3[0]
+                xywh3_2R = xywh3[1]
+                xywh3_3R = xywh3[2]
+            elif txt_len == 4:
+                xywh4 = b.read().splitlines()
+                xywh4_1R = xywh4[0]
+                xywh4_2R = xywh4[1]
+                xywh4_3R = xywh4[2]
+                xywh4_4R = xywh4[3]
+            elif txt_len == 5:
+                xywh5 = b.read().splitlines()
+                xywh5_1R = xywh5[0]
+                xywh5_2R = xywh5[1]
+                xywh5_3R = xywh5[2]
+                xywh5_4R = xywh5[3]
+                xywh5_5R = xywh5[4]
+            else:
+                continue
+            b.close()
+        
+        time.sleep(0.1)
+        file_list2 = os.listdir(labels_PATH)
+        file_count2 = len(file_list2)
+        if file_count == file_count2:
+            stop_count += 1
+        else:
+            stop_count = 0
 
-while True:
-    print(test1)
+        ret, frame = cap.read()
 
-# if __name__ == "__main__":
-#     main()
+        if stop_count < 10:
+            if txt_len == 1:
+                cv2.rectangle(frame, 
+                (int((float(xywh1_1R[6:11])*frame_W)-((float(xywh1_1R[18:23])/2)*frame_W)),
+                int((float(xywh1_1R[12:17])*frame_H)-((float(xywh1_1R[24:29])/2)*frame_H)),
+                int((float(xywh1_1R[18:23]))*frame_W),
+                int((float(xywh1_1R[24:29]))*frame_H)),
+                (0,0,255), 2)
+                cv2.putText(frame, cv_text,
+                (int((float(xywh1_1R[6:11])*frame_W)-((float(xywh1_1R[18:23])/2)*frame_W)),
+                int((float(xywh1_1R[12:17])*frame_H)-((float(xywh1_1R[24:29])/2)*frame_H))), 
+                cv2.FONT_HERSHEY_SIMPLEX, 0.9,
+                (0, 0, 255), 2, cv2.LINE_AA)
+
+            elif txt_len == 2:
+                cv2.rectangle(frame, 
+                (int((float(xywh2_1R[6:11])*frame_W)-((float(xywh2_1R[18:23])/2)*frame_W)),
+                int((float(xywh2_1R[12:17])*frame_H)-((float(xywh2_1R[24:29])/2)*frame_H)),
+                int((float(xywh2_1R[18:23]))*frame_W),
+                int((float(xywh2_1R[24:29]))*frame_H)),
+                (0,0,255), 2)
+                cv2.putText(frame, cv_text,
+                (int((float(xywh2_1R[6:11])*frame_W)-((float(xywh2_1R[18:23])/2)*frame_W)),
+                int((float(xywh2_1R[12:17])*frame_H)-((float(xywh2_1R[24:29])/2)*frame_H))), 
+                cv2.FONT_HERSHEY_SIMPLEX, 0.9,
+                (0, 0, 255), 2, cv2.LINE_AA)
+
+                cv2.rectangle(frame, 
+                (int((float(xywh2_2R[6:11])*frame_W)-((float(xywh2_2R[18:23])/2)*frame_W)),
+                int((float(xywh2_2R[12:17])*frame_H)-((float(xywh2_2R[24:29])/2)*frame_H)),
+                int((float(xywh2_2R[18:23]))*frame_W),
+                int((float(xywh2_2R[24:29]))*frame_H)),
+                (0,0,255), 2)
+                cv2.putText(frame, cv_text,
+                (int((float(xywh2_2R[6:11])*frame_W)-((float(xywh2_2R[18:23])/2)*frame_W)),
+                int((float(xywh2_2R[12:17])*frame_H)-((float(xywh2_2R[24:29])/2)*frame_H))), 
+                cv2.FONT_HERSHEY_SIMPLEX, 0.9,
+                (0, 0, 255), 2, cv2.LINE_AA)
+
+            elif txt_len == 3:
+                cv2.rectangle(frame, 
+                (int((float(xywh3_1R[6:11])*frame_W)-((float(xywh3_1R[18:23])/2)*frame_W)),
+                int((float(xywh3_1R[12:17])*frame_H)-((float(xywh3_1R[24:29])/2)*frame_H)),
+                int((float(xywh3_1R[18:23]))*frame_W),
+                int((float(xywh3_1R[24:29]))*frame_H)),
+                (0,0,255), 2)
+                cv2.putText(frame, cv_text,
+                (int((float(xywh3_1R[6:11])*frame_W)-((float(xywh3_1R[18:23])/2)*frame_W)),
+                int((float(xywh3_1R[12:17])*frame_H)-((float(xywh3_1R[24:29])/2)*frame_H))), 
+                cv2.FONT_HERSHEY_SIMPLEX, 0.9,
+                (0, 0, 255), 2, cv2.LINE_AA)
+
+                cv2.rectangle(frame, 
+                (int((float(xywh3_2R[6:11])*frame_W)-((float(xywh3_2R[18:23])/2)*frame_W)),
+                int((float(xywh3_2R[12:17])*frame_H)-((float(xywh3_2R[24:29])/2)*frame_H)),
+                int((float(xywh3_2R[18:23]))*frame_W),
+                int((float(xywh3_2R[24:29]))*frame_H)),
+                (0,0,255), 2)
+                cv2.putText(frame, cv_text,
+                (int((float(xywh3_2R[6:11])*frame_W)-((float(xywh3_2R[18:23])/2)*frame_W)),
+                int((float(xywh3_2R[12:17])*frame_H)-((float(xywh3_2R[24:29])/2)*frame_H))), 
+                cv2.FONT_HERSHEY_SIMPLEX, 0.9,
+                (0, 0, 255), 2, cv2.LINE_AA)
+
+                cv2.rectangle(frame, 
+                (int((float(xywh3_3R[6:11])*frame_W)-((float(xywh3_3R[18:23])/2)*frame_W)),
+                int((float(xywh3_3R[12:17])*frame_H)-((float(xywh3_3R[24:29])/2)*frame_H)),
+                int((float(xywh3_3R[18:23]))*frame_W),
+                int((float(xywh3_3R[24:29]))*frame_H)),
+                (0,0,255), 2)
+                cv2.putText(frame, cv_text,
+                (int((float(xywh3_3R[6:11])*frame_W)-((float(xywh3_3R[18:23])/2)*frame_W)),
+                int((float(xywh3_3R[12:17])*frame_H)-((float(xywh3_3R[24:29])/2)*frame_H))), 
+                cv2.FONT_HERSHEY_SIMPLEX, 0.9,
+                (0, 0, 255), 2, cv2.LINE_AA)
+
+            elif txt_len == 4:
+                cv2.rectangle(frame, 
+                (int((float(xywh4_1R[6:11])*frame_W)-((float(xywh4_1R[18:23])/2)*frame_W)),
+                int((float(xywh4_1R[12:17])*frame_H)-((float(xywh4_1R[24:29])/2)*frame_H)),
+                int((float(xywh4_1R[18:23]))*frame_W),
+                int((float(xywh4_1R[24:29]))*frame_H)),
+                (0,0,255), 2)
+                cv2.putText(frame, cv_text,
+                (int((float(xywh4_1R[6:11])*frame_W)-((float(xywh4_1R[18:23])/2)*frame_W)),
+                int((float(xywh4_1R[12:17])*frame_H)-((float(xywh4_1R[24:29])/2)*frame_H))), 
+                cv2.FONT_HERSHEY_SIMPLEX, 0.9,
+                (0, 0, 255), 2, cv2.LINE_AA)
+
+                cv2.rectangle(frame, 
+                (int((float(xywh4_2R[6:11])*frame_W)-((float(xywh4_2R[18:23])/2)*frame_W)),
+                int((float(xywh4_2R[12:17])*frame_H)-((float(xywh4_2R[24:29])/2)*frame_H)),
+                int((float(xywh4_2R[18:23]))*frame_W),
+                int((float(xywh4_2R[24:29]))*frame_H)),
+                (0,0,255), 2)
+                cv2.putText(frame, cv_text,
+                (int((float(xywh4_2R[6:11])*frame_W)-((float(xywh4_2R[18:23])/2)*frame_W)),
+                int((float(xywh4_2R[12:17])*frame_H)-((float(xywh4_2R[24:29])/2)*frame_H))), 
+                cv2.FONT_HERSHEY_SIMPLEX, 0.9,
+                (0, 0, 255), 2, cv2.LINE_AA)
+
+                cv2.rectangle(frame, 
+                (int((float(xywh4_3R[6:11])*frame_W)-((float(xywh4_3R[18:23])/2)*frame_W)),
+                int((float(xywh4_3R[12:17])*frame_H)-((float(xywh4_3R[24:29])/2)*frame_H)),
+                int((float(xywh4_3R[18:23]))*frame_W),
+                int((float(xywh4_3R[24:29]))*frame_H)),
+                (0,0,255), 2)
+                cv2.putText(frame, cv_text,
+                (int((float(xywh4_3R[6:11])*frame_W)-((float(xywh4_3R[18:23])/2)*frame_W)),
+                int((float(xywh4_3R[12:17])*frame_H)-((float(xywh4_3R[24:29])/2)*frame_H))), 
+                cv2.FONT_HERSHEY_SIMPLEX, 0.9,
+                (0, 0, 255), 2, cv2.LINE_AA)
+
+                cv2.rectangle(frame, 
+                (int((float(xywh4_4R[6:11])*frame_W)-((float(xywh4_4R[18:23])/2)*frame_W)),
+                int((float(xywh4_4R[12:17])*frame_H)-((float(xywh4_4R[24:29])/2)*frame_H)),
+                int((float(xywh4_4R[18:23]))*frame_W),
+                int((float(xywh4_4R[24:29]))*frame_H)),
+                (0,0,255), 2)
+                cv2.putText(frame, cv_text,
+                (int((float(xywh4_4R[6:11])*frame_W)-((float(xywh4_4R[18:23])/2)*frame_W)),
+                int((float(xywh4_4R[12:17])*frame_H)-((float(xywh4_4R[24:29])/2)*frame_H))), 
+                cv2.FONT_HERSHEY_SIMPLEX, 0.9,
+                (0, 0, 255), 2, cv2.LINE_AA)
+            
+            elif txt_len == 5:
+                cv2.rectangle(frame, 
+                (int((float(xywh5_1R[6:11])*frame_W)-((float(xywh5_1R[18:23])/2)*frame_W)),
+                int((float(xywh5_1R[12:17])*frame_H)-((float(xywh5_1R[24:29])/2)*frame_H)),
+                int((float(xywh5_1R[18:23]))*frame_W),
+                int((float(xywh5_1R[24:29]))*frame_H)),
+                (0,0,255), 2)
+                cv2.putText(frame, cv_text,
+                (int((float(xywh5_1R[6:11])*frame_W)-((float(xywh5_1R[18:23])/2)*frame_W)),
+                int((float(xywh5_1R[12:17])*frame_H)-((float(xywh5_1R[24:29])/2)*frame_H))), 
+                cv2.FONT_HERSHEY_SIMPLEX, 0.9,
+                (0, 0, 255), 2, cv2.LINE_AA)
+
+                cv2.rectangle(frame, 
+                (int((float(xywh5_2R[6:11])*frame_W)-((float(xywh5_2R[18:23])/2)*frame_W)),
+                int((float(xywh5_2R[12:17])*frame_H)-((float(xywh5_2R[24:29])/2)*frame_H)),
+                int((float(xywh5_2R[18:23]))*frame_W),
+                int((float(xywh5_2R[24:29]))*frame_H)),
+                (0,0,255), 2)
+                cv2.putText(frame, cv_text,
+                (int((float(xywh5_2R[6:11])*frame_W)-((float(xywh5_2R[18:23])/2)*frame_W)),
+                int((float(xywh5_2R[12:17])*frame_H)-((float(xywh5_2R[24:29])/2)*frame_H))), 
+                cv2.FONT_HERSHEY_SIMPLEX, 0.9,
+                (0, 0, 255), 2, cv2.LINE_AA)
+
+                cv2.rectangle(frame, 
+                (int((float(xywh5_3R[6:11])*frame_W)-((float(xywh5_3R[18:23])/2)*frame_W)),
+                int((float(xywh5_3R[12:17])*frame_H)-((float(xywh5_3R[24:29])/2)*frame_H)),
+                int((float(xywh5_3R[18:23]))*frame_W),
+                int((float(xywh5_3R[24:29]))*frame_H)),
+                (0,0,255), 2)
+                cv2.putText(frame, cv_text,
+                (int((float(xywh5_3R[6:11])*frame_W)-((float(xywh5_3R[18:23])/2)*frame_W)),
+                int((float(xywh5_3R[12:17])*frame_H)-((float(xywh5_3R[24:29])/2)*frame_H))), 
+                cv2.FONT_HERSHEY_SIMPLEX, 0.9,
+                (0, 0, 255), 2, cv2.LINE_AA)
+
+                cv2.rectangle(frame, 
+                (int((float(xywh5_4R[6:11])*frame_W)-((float(xywh5_4R[18:23])/2)*frame_W)),
+                int((float(xywh5_4R[12:17])*frame_H)-((float(xywh5_4R[24:29])/2)*frame_H)),
+                int((float(xywh5_4R[18:23]))*frame_W),
+                int((float(xywh5_4R[24:29]))*frame_H)),
+                (0,0,255), 2)
+                cv2.putText(frame, cv_text,
+                (int((float(xywh5_4R[6:11])*frame_W)-((float(xywh5_4R[18:23])/2)*frame_W)),
+                int((float(xywh5_4R[12:17])*frame_H)-((float(xywh5_4R[24:29])/2)*frame_H))), 
+                cv2.FONT_HERSHEY_SIMPLEX, 0.9,
+                (0, 0, 255), 2, cv2.LINE_AA)
+
+                cv2.rectangle(frame, 
+                (int((float(xywh5_5R[6:11])*frame_W)-((float(xywh5_5R[18:23])/2)*frame_W)),
+                int((float(xywh5_5R[12:17])*frame_H)-((float(xywh5_5R[24:29])/2)*frame_H)),
+                int((float(xywh5_5R[18:23]))*frame_W),
+                int((float(xywh5_5R[24:29]))*frame_H)),
+                (0,0,255), 2)
+                cv2.putText(frame, cv_text,
+                (int((float(xywh5_5R[6:11])*frame_W)-((float(xywh5_5R[18:23])/2)*frame_W)),
+                int((float(xywh5_5R[12:17])*frame_H)-((float(xywh5_5R[24:29])/2)*frame_H))), 
+                cv2.FONT_HERSHEY_SIMPLEX, 0.9,
+                (0, 0, 255), 2, cv2.LINE_AA)
+            else:
+                cv2.rectangle(frame, (0, 0), (640, 480), (0, 255, 0), 3)
+                cv2.putText(frame, loading, (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 0.9,
+                (0, 255, 0), 2, cv2.LINE_AA)
+
+        elif stop_count > 10:
+            cv2.rectangle(frame, (0, 0), (640, 480), (0, 255, 0), 3)
+            cv2.putText(frame, loading, (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 0.9,
+                (0, 255, 0), 2, cv2.LINE_AA)
+        else:
+            cv2.rectangle(frame, (0, 0), (640, 480), (0, 255, 0), 3)
+            cv2.putText(frame, loading, (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 0.9,
+                (0, 255, 0), 2, cv2.LINE_AA)
+
+        ret, buffer = cv2.imencode('.jpg', frame)
+        frame2 = buffer.tobytes()
+        yield (b'--frame\r\n' b'Content-Type: image/jpeg\r\n\r\n' + frame2 + b'\r\n')
+
+        cv2.imshow("fire_detect_video", frame)
+        if cv2.waitKey(1) & 0xFF == ord('q'):
+            break
+
+@app.route("/")
+def index():
+    return render_template("index.html")
 
 
 
+@app.route('/video_feed')
+def video_feed():
+    return Response(detect(),
+        mimetype='multipart/x-mixed-replace; boundary=frame')
+
+
+
+if __name__== "__main__":
+    app.run(debug=True)
