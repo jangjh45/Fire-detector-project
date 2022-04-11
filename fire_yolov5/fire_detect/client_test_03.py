@@ -336,7 +336,7 @@ class ClientVideoSocket:
 def main():
     TCP_IP = 'localhost'
     TCP_PORT = 50055
-    video_path = 'http://192.168.0.11:50036/?action=stream'
+    video_path = 'http://192.168.1.202:50036/?action=stream'
     client = ClientVideoSocket(TCP_IP, TCP_PORT, video_path)
 
 if __name__ == "__main__":

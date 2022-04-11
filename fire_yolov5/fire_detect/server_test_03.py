@@ -29,7 +29,6 @@ class ServerSocket:
         print(u'Server socket [ TCP_IP: ' + self.TCP_IP + ', TCP_PORT: ' + str(self.TCP_PORT) + ' ] is connected with client')
 
     def receiveImages(self):
-        global decimg
         try:
             while True:
                 length = self.recvall(self.conn, 64)
