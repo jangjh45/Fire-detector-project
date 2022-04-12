@@ -7,7 +7,7 @@ import pymysql
 db = None 
 cur = None
 
-conn = pymysql.connect(host='192.168.1.202', user='root', password='1234', charset='utf8', db='detect') #DB 연결
+conn = pymysql.connect(host='20.39.201.16', user='root', password='0000', charset='utf8', db='fire_detect') #DB 연결
 cur = conn.cursor() #디폴트 커서 생성
 
 dir_PATH = 'C:/yolov5-master/runs'
@@ -58,14 +58,14 @@ while(True):
         print('\n')
     
     if fire_count >= 3 and non_fire_count == 0:
-        sql = "INSERT INTO detect_table (state, TIME) VALUES ('fire', NOW());"
+        sql = "INSERT INTO detect_table (state, detect_time) VALUES ('fire', NOW());"
         print("화재 발생!!")
     elif fire_count < 3 and non_fire_count < 3:
-        sql = "INSERT INTO detect_table (state, time) VALUES ('loading', NOW());"
+        sql = "INSERT INTO detect_table (state, detect_time) VALUES ('loading', NOW());"
         print("상황파악중") 
     else:
         non_fire_count >= 3 and fire_count == 0
-        sql = "INSERT INTO detect_table (state, time) VALUES ('non_fire', NOW());"
+        sql = "INSERT INTO detect_table (state, detect_time) VALUES ('non_fire', NOW());"
         print("화재 상황 종료")
     cur.execute(sql)
     conn.commit()
