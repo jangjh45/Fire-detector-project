@@ -6,8 +6,6 @@ import time
 import threading
 from rmfile import *
 
-time.sleep(5)
-
 rtsp_PATH = 'http://192.168.1.202:50036/?action=stream'
 dir_PATH = 'C:/yolov5-master/runs'
 labels_PATH = 'C:/yolov5-master/runs/detect/exp/labels'
