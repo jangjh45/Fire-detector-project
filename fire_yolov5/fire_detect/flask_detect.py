@@ -6,8 +6,6 @@ import time
 import threading
 from rmfile import *
 
-time.sleep(5)
-
 rtsp_PATH = 'http://192.168.1.202:50036/?action=stream'
 dir_PATH = 'C:/yolov5-master/runs'
 labels_PATH = 'C:/yolov5-master/runs/detect/exp/labels'
@@ -30,7 +28,7 @@ def detect():
 
         file_list = os.listdir(labels_PATH)
         file_count = len(file_list)
-        if file_count < 6: #폴더안에 좌표값txt가 없으면 아래 코드 무시 1개이상 있으면 아래 코드 실행
+        if file_count < 2: #폴더안에 좌표값txt가 없으면 아래 코드 무시 1개이상 있으면 아래 코드 실행
             continue
         
         label_list = sorted(glob.glob(txt_PATH), key=os.path.getctime, reverse=True)

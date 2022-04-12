@@ -6,4 +6,3 @@ rmfile_PATH = 'C:/yolov5-master/runs/detect'
 
 if os.path.exists(rmfile_PATH):
     shutil.rmtree(rmfile_PATH)
-    # time.sleep(5)
