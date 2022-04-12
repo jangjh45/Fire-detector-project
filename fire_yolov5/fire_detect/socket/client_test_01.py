@@ -1,7 +1,5 @@
 import socket
 
-from torch import addr
-
 s = socket.socket()
 
 port = 5002
