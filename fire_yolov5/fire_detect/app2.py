@@ -2,14 +2,11 @@ from flask import Flask
 from flask import render_template
 from flask import Response
 import numpy as np
-import threading
+# import threading
 
 app2 = Flask(__name__)
 
-from rmfile import *
 from flask_detect import detect
-
-
 
 @app2.route("/")
 def index():
@@ -28,3 +25,4 @@ if __name__== "__main__":
     app2.run(debug=True)
     # my_thread = threading.Thread(target=detect())
     # my_thread.start()
+    
