@@ -58,8 +58,6 @@ while(True):
         txt_len = len(a.readlines())
         a.close()
     
-    
-
     if first_list != second_list:   
         fire_count += 1 
         non_fire_count = 0

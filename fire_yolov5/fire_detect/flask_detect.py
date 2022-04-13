@@ -36,7 +36,10 @@ def detect():
         file_count = len(file_list)
         if file_count < 1: #폴더안에 좌표값txt가 없으면 아래 코드 무시 1개이상 있으면 아래 코드 실행
             continue
+        else:
+            break
 
+    while(True):
         label_list = sorted(glob.glob(txt_PATH), key=os.path.getctime, reverse=True)
         first_list = label_list[0] #label폴더에서 마지막생성 좌표 경로 리스트 저장
 
