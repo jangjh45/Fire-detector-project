@@ -10,7 +10,7 @@ db = None
 cur = None
 
 conn = pymysql.connect(host='20.39.201.16',
-                       user='root',
+                       user='fire',
                        password='0000',
                        charset='utf8',
                        db='fire_detect') #DB 연결
