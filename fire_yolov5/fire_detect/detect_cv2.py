@@ -5,6 +5,8 @@ import glob
 import time
 from rmfile import *
 
+time.sleep(5)
+
 rtsp_PATH = 'http://192.168.1.202:50036/?action=stream'
 dir_PATH = 'C:/yolov5-master/runs'
 labels_PATH = 'C:/yolov5-master/runs/detect/exp/labels'
@@ -18,16 +20,18 @@ frame_H = 480
 stop_count = 0
 
 while(True):
+    ret, frame = cap.read()
+
     dir_list = os.listdir(dir_PATH)
     dir_count = len(dir_list)
-    if dir_count == 0: #폴더가 없으면 아래 코드 무시 1개이상 있으면 아래 코드 실행
+    if dir_count < 1: #폴더가 없으면 아래 코드 무시 1개이상 있으면 아래 코드 실행
         continue
-
+        
     file_list = os.listdir(labels_PATH)
     file_count = len(file_list)
-    if file_count < 6: #폴더안에 좌표값txt가 없으면 아래 코드 무시 1개이상 있으면 아래 코드 실행
+    if file_count < 1: #폴더안에 좌표값txt가 없으면 아래 코드 무시 1개이상 있으면 아래 코드 실행
         continue
-    
+
     label_list = sorted(glob.glob(txt_PATH), key=os.path.getctime, reverse=True)
     first_list = label_list[0] #label폴더에서 마지막생성 좌표 경로 리스트 저장
 
@@ -79,8 +83,6 @@ while(True):
         stop_count += 1
     else:
         stop_count = 0
-
-    ret, frame = cap.read()
 
     if stop_count < 10:
         if txt_len == 1:

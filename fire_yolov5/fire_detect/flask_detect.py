@@ -3,7 +3,6 @@ import cv2
 import numpy as np
 import glob
 import time
-import threading
 from rmfile import *
 
 rtsp_PATH = 'http://192.168.1.202:50036/?action=stream'
@@ -20,17 +19,26 @@ stop_count = 0
 
 def detect():
     global cap, frame_H, frame_W, stop_count
+
     while(True):
-        ret, frame = cap.read()
         dir_list = os.listdir(dir_PATH)
         dir_count = len(dir_list)
-        if dir_count == 0: #폴더가 없으면 아래 코드 무시 1개이상 있으면 아래 코드 실행
+        if dir_count < 1: #폴더가 없으면 아래 코드 무시 1개이상 있으면 아래 코드 실행
             continue
+
+        f = open("C:/yolov5-master/runs/detect/exp/labels/_action_stream_0.txt", "w")
+        f.write("0.000 0.500 0.500 1.000 1.000")
+        f.close()
 
         file_list = os.listdir(labels_PATH)
         file_count = len(file_list)
-        if file_count < 2: #폴더안에 좌표값txt가 없으면 아래 코드 무시 1개이상 있으면 아래 코드 실행
+        if file_count < 1: #폴더안에 좌표값txt가 없으면 아래 코드 무시 1개이상 있으면 아래 코드 실행
             continue
+        else:
+            break
+
+    while(True):
+        ret, frame = cap.read()
 
         label_list = sorted(glob.glob(txt_PATH), key=os.path.getctime, reverse=True)
         first_list = label_list[0] #label폴더에서 마지막생성 좌표 경로 리스트 저장
