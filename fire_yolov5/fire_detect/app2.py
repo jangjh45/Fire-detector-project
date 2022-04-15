@@ -10,7 +10,7 @@ from flask_detect import detect
 
 @app2.route("/")
 def index():
-    return render_template("index.html")
+    return render_template("index2.html")
 
 
 

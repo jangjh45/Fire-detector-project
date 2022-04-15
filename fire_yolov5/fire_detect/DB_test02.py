@@ -72,7 +72,7 @@ while(True):
 
     elif fire_count < 3 and non_fire_count < 3:
         sql = "INSERT INTO detect_table (fire_num, detect_time) VALUES (%s, NOW());"
-        cur.execute(sql, (txt_len))
+        cur.execute(sql, (no_txt_len))
         print("상황파악중") 
 
     else:
