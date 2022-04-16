@@ -26,11 +26,6 @@ non_fire_count = 0
 
 no_txt_len = 0
 
-fire = "fire"
-loading = "loading"
-non_fire = "non_fire"
-
-
 while(True):
     dir_list = os.listdir(dir_PATH)
     dir_count = len(dir_list)
@@ -71,19 +66,19 @@ while(True):
     print(non_fire_count)
     
     if fire_count >= 3 and non_fire_count == 0:
-        sql = "INSERT INTO detect_table (state, detect_num, detect_time) VALUES (%s, %s, NOW());"
-        cur.execute(sql, (fire, txt_len))
+        sql = "INSERT INTO detect_table (fire_num, detect_time) VALUES (%s, NOW());"
+        cur.execute(sql, (txt_len))
         print("화재 발생!!")
 
     elif fire_count < 3 and non_fire_count < 3:
-        sql = "INSERT INTO detect_table (state, detect_num, detect_time) VALUES (%s, %s, NOW());"
-        cur.execute(sql, (loading, no_txt_len))
+        sql = "INSERT INTO detect_table (fire_num, detect_time) VALUES (%s, NOW());"
+        cur.execute(sql, (no_txt_len))
         print("상황파악중") 
 
     else:
         non_fire_count >= 3 and fire_count == 0
-        sql = "INSERT INTO detect_table (state, detect_num, detect_time) VALUES (%s, %s, NOW());"
-        cur.execute(sql, (non_fire, no_txt_len))
+        sql = "INSERT INTO detect_table (fire_num, detect_time) VALUES (%s, NOW());"
+        cur.execute(sql, (no_txt_len))
         print("화재 상황 종료")
 
     conn.commit()

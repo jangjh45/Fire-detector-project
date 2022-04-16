@@ -40,6 +40,9 @@ def detect():
     while(True):
         ret, frame = cap.read()
 
+        file_list2 = os.listdir(labels_PATH)
+        file_count2 = len(file_list2)
+
         label_list = sorted(glob.glob(txt_PATH), key=os.path.getctime, reverse=True)
         first_list = label_list[0] #label폴더에서 마지막생성 좌표 경로 리스트 저장
 
@@ -84,15 +87,15 @@ def detect():
                 continue
             b.close()
         
-        time.sleep(0.1)
-        file_list2 = os.listdir(labels_PATH)
-        file_count2 = len(file_list2)
-        if file_count == file_count2:
+        time.sleep(0.01)
+        file_list3 = os.listdir(labels_PATH)
+        file_count3 = len(file_list3)
+        if file_count2 == file_count3:
             stop_count += 1
         else:
             stop_count = 0
 
-        if stop_count < 10:
+        if stop_count < 100:
             if txt_len == 1:
                 cv2.rectangle(frame, 
                 (int((float(xywh1_1R[6:11])*frame_W)-((float(xywh1_1R[18:23])/2)*frame_W)),
@@ -282,7 +285,7 @@ def detect():
                 cv2.putText(frame, loading, (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 0.9,
                 (0, 255, 0), 2, cv2.LINE_AA)
 
-        elif stop_count > 10:
+        elif stop_count > 100:
             cv2.rectangle(frame, (0, 0), (640, 480), (0, 255, 0), 3)
             cv2.putText(frame, loading, (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 0.9,
                 (0, 255, 0), 2, cv2.LINE_AA)
