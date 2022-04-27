@@ -1,7 +1,6 @@
 from flask import Flask
 from flask import render_template
 from flask import Response
-import numpy as np
 # import threading
 
 app2 = Flask(__name__)

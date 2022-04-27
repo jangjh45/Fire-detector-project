@@ -68,18 +68,18 @@ while(True):
     if fire_count >= 3 and non_fire_count == 0:
         sql = "INSERT INTO detect_table (fire_num, detect_time) VALUES (%s, NOW());"
         cur.execute(sql, (txt_len))
-        print("화재 발생!!")
+        print("fire")
 
     elif fire_count < 3 and non_fire_count < 3:
         sql = "INSERT INTO detect_table (fire_num, detect_time) VALUES (%s, NOW());"
         cur.execute(sql, (no_txt_len))
-        print("상황파악중") 
+        print("loading") 
 
     else:
         non_fire_count >= 3 and fire_count == 0
         sql = "INSERT INTO detect_table (fire_num, detect_time) VALUES (%s, NOW());"
         cur.execute(sql, (no_txt_len))
-        print("화재 상황 종료")
+        print("nofire")
 
     conn.commit()
     print('rowcount: ', cur.rowcount)
