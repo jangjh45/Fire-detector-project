@@ -1,12 +1,13 @@
 from flask import Flask
 from flask import render_template
 from flask import Response
-import numpy as np
 from fire_yolov5.fire_detect.flask_detect import detect
-from multiprocessing import Process, Queue
+from multiprocessing import Process
 
 app = Flask(__name__)
+
 import flask_detect
+import DB_test03
 
 @app.route("/")
 def index():
@@ -22,5 +23,13 @@ def video_feed():
 
 
 if __name__== "__main__":
-    flask_detect.detect()
-    app.run(debug=True)
+    process_one = Process(target = flask_detect.detect)
+    process_two = Process(target = DB_test03.fire_num)
+
+    process_one.start()
+    process_two.start()
+
+    process_one.join()
+    process_two.join()
+
+    app.run(host = '192.168.1.1', port = 50055, debug = True)
