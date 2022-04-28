@@ -1,7 +1,7 @@
 from flask import Flask
 from flask import render_template
 from flask import Response
-from fire_yolov5.fire_detect.flask_detect import detect
+from flask_detect import detect
 from multiprocessing import Process
 
 app = Flask(__name__)
