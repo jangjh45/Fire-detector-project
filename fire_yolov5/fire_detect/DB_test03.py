@@ -9,7 +9,7 @@ time.sleep(5)
 db = None 
 cur = None
 
-conn = pymysql.connect(host='20.39.201.16',
+conn = pymysql.connect(host='20.194.30.39',
                        user='fire',
                        password='0000',
                        charset='utf8',
@@ -69,18 +69,18 @@ def fire_num():
         print(non_fire_count)
         
         if fire_count >= 3 and non_fire_count == 0:
-            sql = "INSERT INTO detect_table (fire_num, detect_time) VALUES (%s, NOW());"
+            sql = "INSERT INTO detect (detect_time, detect_num) VALUES (NOW(), %s);"
             cur.execute(sql, (txt_len))
             print("fire")
 
         elif fire_count < 3 and non_fire_count < 3:
-            sql = "INSERT INTO detect_table (fire_num, detect_time) VALUES (%s, NOW());"
+            sql = "INSERT INTO detect (detect_time, detect_num) VALUES (NOW(), %s);"
             cur.execute(sql, (no_txt_len))
             print("loading") 
 
         else:
             non_fire_count >= 3 and fire_count == 0
-            sql = "INSERT INTO detect_table (fire_num, detect_time) VALUES (%s, NOW());"
+            sql = "INSERT INTO detect (detect_time, detect_num) VALUES (NOW(), %s);"
             cur.execute(sql, (no_txt_len))
             print("nofire")
 
