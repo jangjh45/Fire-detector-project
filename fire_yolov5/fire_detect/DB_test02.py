@@ -3,7 +3,7 @@ import glob
 import time
 import pymysql
 
-time.sleep(5)
+time.sleep(1)
 
 # 전역변수 선언부 
 db = None 
@@ -49,9 +49,10 @@ while(True):
     second_list = label_list2[0]     
     #print(second_list)
 
-    with open(first_list) as a:   #txt파일을 읽어 각 행 개수 파악
+    with open(second_list) as a:   #txt파일을 읽어 각 행 개수 파악
         txt_len = len(a.readlines())
         a.close()
+        print('불 개수 :', txt_len)
         
     if first_list != second_list:   
         fire_count += 1 
@@ -62,8 +63,8 @@ while(True):
         non_fire_count += 1
         fire_count = 0
 
-    print(fire_count)
-    print(non_fire_count)
+    print('화재 상황 카운트 : ', fire_count)
+    print('화재 종료 카운트 : ', non_fire_count)
         
     if fire_count >= 3 and non_fire_count == 0:
         sql = "INSERT INTO detect (detect_time, detect_num) VALUES (NOW(), %s);"

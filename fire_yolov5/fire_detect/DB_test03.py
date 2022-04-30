@@ -3,7 +3,7 @@ import glob
 import time
 import pymysql
 
-time.sleep(5)
+time.sleep(1)
 
 # 전역변수 선언부 
 db = None 
@@ -27,7 +27,7 @@ non_fire_count = 0
 no_txt_len = 0
 
 def fire_num():
-    global db, cur, conn, fire_count, non_fire_count, no_txt_len
+    global fire_count, non_fire_count, no_txt_len
 
     while(True):
         dir_list = os.listdir(dir_PATH)
@@ -55,6 +55,7 @@ def fire_num():
         with open(first_list) as a:   #txt파일을 읽어 각 행 개수 파악
             txt_len = len(a.readlines())
             a.close()
+            print('불 개수 :', txt_len)
         
         if first_list != second_list:   
             fire_count += 1 
@@ -65,8 +66,8 @@ def fire_num():
             non_fire_count += 1
             fire_count = 0
 
-        print(fire_count)
-        print(non_fire_count)
+        print('화재 상황 카운트 : ', fire_count)
+        print('화재 종료 카운트 : ', non_fire_count)
         
         if fire_count >= 3 and non_fire_count == 0:
             sql = "INSERT INTO detect (detect_time, detect_num) VALUES (NOW(), %s);"
@@ -86,3 +87,6 @@ def fire_num():
 
         conn.commit()
         #print('rowcount: ', cur.rowcount)
+
+if __name__== "__main__":
+    fire_num()
