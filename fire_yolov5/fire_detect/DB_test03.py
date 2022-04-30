@@ -85,4 +85,4 @@ def fire_num():
             print("nofire")
 
         conn.commit()
-        print('rowcount: ', cur.rowcount)
+        #print('rowcount: ', cur.rowcount)

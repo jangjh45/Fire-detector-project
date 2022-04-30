@@ -82,4 +82,4 @@ while(True):
         print("nofire")
 
     conn.commit()
-    print('rowcount: ', cur.rowcount)
+    #print('rowcount: ', cur.rowcount)

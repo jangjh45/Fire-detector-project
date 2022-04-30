@@ -41,67 +41,43 @@ while True:
     conn.commit()
     time.sleep(stop_time)
 
-    ser.write(loc30.encode('utf-8'))
+    ser.write(loc45.encode('utf-8'))
     sql = "INSERT INTO location (time, location) VALUES (NOW(), %s);"
     cur.execute(sql, (point2))
     conn.commit()
     time.sleep(stop_time)
 
-    ser.write(loc60.encode('utf-8'))
+    ser.write(loc90.encode('utf-8'))
     sql = "INSERT INTO location (time, location) VALUES (NOW(), %s);"
     cur.execute(sql, (point3))
     conn.commit()
     time.sleep(stop_time)
     
-    ser.write(loc90.encode('utf-8'))
+    ser.write(loc135.encode('utf-8'))
     sql = "INSERT INTO location (time, location) VALUES (NOW(), %s);"
     cur.execute(sql, (point4))
-    conn.commit()
-    time.sleep(stop_time)
-
-    ser.write(loc120.encode('utf-8'))
-    sql = "INSERT INTO location (time, location) VALUES (NOW(), %s);"
-    cur.execute(sql, (point5))
-    conn.commit()
-    time.sleep(stop_time)
-
-    ser.write(loc150.encode('utf-8'))
-    sql = "INSERT INTO location (time, location) VALUES (NOW(), %s);"
-    cur.execute(sql, (point6))
     conn.commit()
     time.sleep(stop_time)
 
     ser.write(loc180.encode('utf-8'))
     sql = "INSERT INTO location (time, location) VALUES (NOW(), %s);"
-    cur.execute(sql, (point7))
-    conn.commit()
-    time.sleep(stop_time)
-
-    ser.write(loc150.encode('utf-8'))
-    sql = "INSERT INTO location (time, location) VALUES (NOW(), %s);"
-    cur.execute(sql, (point6))
-    conn.commit()
-    time.sleep(stop_time)
-
-    ser.write(loc120.encode('utf-8'))
-    sql = "INSERT INTO location (time, location) VALUES (NOW(), %s);"
     cur.execute(sql, (point5))
     conn.commit()
     time.sleep(stop_time)
 
-    ser.write(loc90.encode('utf-8'))
+    ser.write(loc135.encode('utf-8'))
     sql = "INSERT INTO location (time, location) VALUES (NOW(), %s);"
     cur.execute(sql, (point4))
     conn.commit()
     time.sleep(stop_time)
 
-    ser.write(loc60.encode('utf-8'))
+    ser.write(loc90.encode('utf-8'))
     sql = "INSERT INTO location (time, location) VALUES (NOW(), %s);"
     cur.execute(sql, (point3))
     conn.commit()
     time.sleep(stop_time)
 
-    ser.write(loc30.encode('utf-8'))
+    ser.write(loc45.encode('utf-8'))
     sql = "INSERT INTO location (time, location) VALUES (NOW(), %s);"
     cur.execute(sql, (point2))
     conn.commit()
