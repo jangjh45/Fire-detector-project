@@ -27,7 +27,7 @@ non_fire_count = 0
 no_txt_len = 0
 
 def fire_num():
-    global fire_count, non_fire_count, no_txt_len
+    global db, cur, conn, fire_count, non_fire_count, no_txt_len
 
     while(True):
         dir_list = os.listdir(dir_PATH)

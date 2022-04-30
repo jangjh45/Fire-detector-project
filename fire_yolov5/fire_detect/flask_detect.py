@@ -297,6 +297,5 @@ def detect():
         frame2 = buffer.tobytes()
         yield (b'--frame\r\n' b'Content-Type: image/jpeg\r\n\r\n' + frame2 + b'\r\n')
 
-        # cv2.imshow("fire_detect_video", frame)
-        # if cv2.waitKey(1) & 0xFF == ord('q'):
-        #     break
+if __name__== "__main__":
+    detect()
