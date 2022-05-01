@@ -26,5 +26,7 @@ while True:
         ser.write('stop'.encode('utf-8'))
     elif record[1] == 0:
         ser.write('detect'.encode('utf-8'))
+    else:
+        continue
 
     time.sleep(2)
