@@ -4,7 +4,9 @@ import glob
 import time
 from rmfile import *
 
-rtsp_PATH = 'http://192.168.1.202:50036/?action=stream'
+time.sleep(1)
+
+rtsp_PATH = 'http://192.168.0.11:50036/?action=stream'
 dir_PATH = 'C:/yolov5-master/runs'
 labels_PATH = 'C:/yolov5-master/runs/detect/exp/labels'
 txt_PATH = 'C:/yolov5-master/runs/detect/exp/labels/*.txt'
@@ -297,6 +299,5 @@ def detect():
         frame2 = buffer.tobytes()
         yield (b'--frame\r\n' b'Content-Type: image/jpeg\r\n\r\n' + frame2 + b'\r\n')
 
-        # cv2.imshow("fire_detect_video", frame)
-        # if cv2.waitKey(1) & 0xFF == ord('q'):
-        #     break
+if __name__== "__main__":
+    detect()

@@ -1,10 +1,13 @@
 import time
 import pymysql
 import serial
-from queue import LifoQueue 
 import threading
 
-def db(q):
+a = None
+
+def db():
+    global a
+
     sql = "SELECT * FROM detect ORDER BY detect_time DESC limit 1;"
 
     while True:
@@ -19,76 +22,67 @@ def db(q):
         for record in result:
             print(record[0])
             print(record[1])
-        q.put(record[1])
+        a = record[1]
         db.close()
+        time.sleep(1)
 
-def uart(q):
-    stop = 2
-    commend = ['q', 'w', 'e', 'r', 't']
-    commendnum = None
+def uart():
+    global a
 
+    stop = 10
+    
     ser = serial.Serial(port = '/dev/ttyAMA0',
                     baudrate = 9600,
                     timeout = 1)
     
     while True:
-        if q.get() == 0:
+        if a == 0:
                 ser.write('e'.encode('utf-8'))
-                commendnum = 2
-                if q.get() != 0:
-                    break
                 time.sleep(stop)
+                if a != 0:
+                    continue
 
                 ser.write('w'.encode('utf-8'))
-                commendnum = 1
-                if q.get() != 0:
-                    break
                 time.sleep(stop)
+                if a != 0:
+                    continue
 
                 ser.write('q'.encode('utf-8'))
-                commendnum = 0
-                if q.get() != 0:
-                    break
                 time.sleep(stop)
+                if a != 0:
+                    continue
 
                 ser.write('w'.encode('utf-8'))
-                commendnum = 1
-                if q.get() != 0:
-                    break
                 time.sleep(stop)
+                if a != 0:
+                    continue
 
                 ser.write('e'.encode('utf-8'))
-                commendnum = 2
-                if q.get() != 0:
-                    break
                 time.sleep(stop)
+                if a != 0:
+                    continue
 
                 ser.write('r'.encode('utf-8'))
-                commendnum = 3
-                if q.get() != 0:
-                    break
                 time.sleep(stop)
+                if a != 0:
+                    continue
 
                 ser.write('t'.encode('utf-8'))
-                commendnum = 4
-                if q.get() != 0:
-                    break
                 time.sleep(stop)
+                if a != 0:
+                    continue
 
                 ser.write('r'.encode('utf-8'))
-                commendnum = 3
-                if q.get() != 0:
-                    break
                 time.sleep(stop)
+                if a != 0:
+                    continue
 
         else:
-            ser.write(commend[commendnum].encode('utf-8'))
+            continue
 
 if __name__=="__main__":
-    q = LifoQueue()
-    thread1 = threading.Thread(target=db, args=(q, )) 
-    thread2 = threading.Thread(target=uart, args=(q, )) 
+    thread1 = threading.Thread(target=db) 
+    thread2 = threading.Thread(target=uart) 
     thread1.start() 
     thread2.start() 
-    thread1.join() 
-    thread2.join()
+   
