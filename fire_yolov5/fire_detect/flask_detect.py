@@ -4,7 +4,7 @@ import glob
 import time
 from rmfile import *
 
-time.sleep(5)
+time.sleep(1)
 
 rtsp_PATH = 'http://192.168.0.11:50036/?action=stream'
 dir_PATH = 'C:/yolov5-master/runs'
