@@ -1,7 +1,6 @@
 from flask import Flask
 from flask import render_template
 from flask import Response
-# import threading
 
 app2 = Flask(__name__)
 
@@ -9,7 +8,7 @@ from flask_detect import detect
 
 @app2.route("/")
 def index():
-    return render_template("index2.html")
+    return render_template("index.html")
 
 
 
@@ -22,6 +21,4 @@ def video_feed():
 
 if __name__== "__main__":
     app2.run(debug=True)
-    # my_thread = threading.Thread(target=detect())
-    # my_thread.start()
     

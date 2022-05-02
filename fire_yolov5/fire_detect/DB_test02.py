@@ -3,7 +3,7 @@ import glob
 import time
 import pymysql
 
-time.sleep(1)
+time.sleep(5)
 
 # 전역변수 선언부 
 db = None 
