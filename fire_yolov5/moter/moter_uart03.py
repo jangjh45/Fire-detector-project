@@ -7,9 +7,7 @@ a = None
 
 def db():
     global a
-
     sql = "SELECT * FROM detect ORDER BY detect_time DESC limit 1;"
-
     while True:
         db = pymysql.connect(host='20.194.30.39',
                             user='fire',
@@ -28,9 +26,7 @@ def db():
 
 def uart():
     global a
-
     stop = 10
-    
     ser = serial.Serial(port = '/dev/ttyAMA0',
                     baudrate = 9600,
                     timeout = 1)
@@ -76,7 +72,6 @@ def uart():
                 time.sleep(stop)
                 if a != 0:
                     continue
-
         else:
             continue
 

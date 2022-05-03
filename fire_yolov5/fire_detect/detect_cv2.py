@@ -21,7 +21,6 @@ stop_count = 0
 
 def detect():
     global cap, frame_H, frame_W, stop_count
-
     while(True):
         dir_list = os.listdir(dir_PATH)
         dir_count = len(dir_list)
@@ -41,7 +40,6 @@ def detect():
 
     while(True):
         ret, frame = cap.read()
-
         label_list = sorted(glob.glob(txt_PATH), key=os.path.getctime, reverse=True)
         first_list = label_list[0] #label폴더에서 마지막생성 좌표 경로 리스트 저장
 

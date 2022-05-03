@@ -1,12 +1,9 @@
-from flask import Flask
-from flask import render_template
-from flask import Response
 import threading
-from detect_and_db01 import 
+from flask import Flask, Response, render_template
+from detect_and_db01 import fire_num, detect
+
 
 app2 = Flask(__name__)
-
-
 
 @app2.route("/")
 def index():
@@ -22,10 +19,8 @@ def video_feed():
 
 
 if __name__== "__main__":
-    # thread1 = threading.Thread(target = detect)
-    # thread2 = threading.Thread(target = fire_num)
-    # thread1.start()
-    # thread2.start()
-    
+    thread1 = threading.Thread(target = fire_num)
+    thread1.start()
+
     app2.run(debug=True)
     

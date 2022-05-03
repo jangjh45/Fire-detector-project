@@ -18,7 +18,6 @@ stop_count = 0
 
 def detect():
     global cap, frame_H, frame_W, stop_count
-
     while(True):
         dir_list = os.listdir(dir_PATH)
         dir_count = len(dir_list)
@@ -38,7 +37,6 @@ def detect():
 
     while(True):
         ret, frame = cap.read()
-
         file_list2 = os.listdir(labels_PATH)
         file_count2 = len(file_list2)
 
