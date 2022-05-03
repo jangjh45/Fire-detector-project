@@ -1,6 +1,4 @@
-from flask import Flask
-from flask import render_template
-from flask import Response
+from flask import Flask, Response, render_template
 from flask_detect import detect
 
 app = Flask(__name__)

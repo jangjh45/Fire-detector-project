@@ -2,10 +2,37 @@ import time
 import pymysql
 import serial
 import threading
+import Adafruit_DHT
 
 a = None
 
-def db():
+def temper():
+    sensor = Adafruit_DHT.DHT11
+    pin=18
+    cur = None
+    conn = pymysql.connect(host='20.194.30.39',
+                       user='fire',
+                       password='0000',
+                       charset='utf8',
+                       db='fire_detect')
+
+    while(True):
+        h, t = Adafruit_DHT.read_retry(sensor, pin)
+        if (h is not None) and (t is not None) :
+            tem = ("{:.1f}".format(t))
+            hum = ("{:.1f}".format(h))
+            sql = "INSERT INTO temper (time, temperature, humidity) VALUES (NOW(), %s, %s);"
+            cur.execute(sql, (tem, hum))
+            print(tem)
+            print(hum)
+        else:
+            continue
+
+        conn.commit()
+        print('rowcount: ', cur.rowcount)
+        time.sleep(2)
+
+def readdb():
     global a
     sql = "SELECT * FROM detect ORDER BY detect_time DESC limit 1;"
     while True:
@@ -76,8 +103,10 @@ def uart():
             continue
 
 if __name__=="__main__":
-    thread1 = threading.Thread(target=db) 
-    thread2 = threading.Thread(target=uart) 
+    thread1 = threading.Thread(target=readdb) 
+    thread2 = threading.Thread(target=uart)
+    thread3 = threading.Thread(target=temper)
     thread1.start() 
-    thread2.start() 
+    thread2.start()
+    thread3.start()
    

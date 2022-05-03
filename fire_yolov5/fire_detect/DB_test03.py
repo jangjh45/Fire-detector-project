@@ -4,18 +4,15 @@ import time
 import pymysql
 
 time.sleep(5)
-
-# 전역변수 선언부 
-db = None 
+ 
 cur = None
-
 conn = pymysql.connect(host='20.194.30.39',
                        user='fire',
                        password='0000',
                        charset='utf8',
-                       db='fire_detect') #DB 연결
+                       db='fire_detect')
                         
-cur = conn.cursor() #디폴트 커서 생성
+cur = conn.cursor()
 
 dir_PATH = 'C:/yolov5-master/runs'
 labels_PATH = 'C:/yolov5-master/runs/detect/exp/labels'
@@ -23,11 +20,10 @@ txt_PATH = 'C:/yolov5-master/runs/detect/exp/labels/*.txt'
 
 fire_count = 0
 non_fire_count = 0
-
 no_txt_len = 0
 
 def fire_num():
-    global db, cur, conn, fire_count, non_fire_count, no_txt_len
+    global cur, conn, fire_count, non_fire_count, no_txt_len
 
     while(True):
         dir_list = os.listdir(dir_PATH)

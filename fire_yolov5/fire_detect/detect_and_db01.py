@@ -2,9 +2,11 @@ import os
 import cv2
 import glob
 import time
+import pymysql
+import threading
 from rmfile import *
 
-rtsp_PATH = 'http://192.168.1.202:50036/?action=stream'
+rtsp_PATH = 'http://192.168.0.11:50036/?action=stream'
 dir_PATH = 'C:/yolov5-master/runs'
 labels_PATH = 'C:/yolov5-master/runs/detect/exp/labels'
 txt_PATH = 'C:/yolov5-master/runs/detect/exp/labels/*.txt'
@@ -16,12 +18,80 @@ frame_W = 640
 frame_H = 480
 stop_count = 0
 
+cur = None
+conn = pymysql.connect(host='20.194.30.39',
+                       user='fire',
+                       password='0000',
+                       charset='utf8',
+                       db='fire_detect')           
+cur = conn.cursor()
+
+fire_count = 0
+non_fire_count = 0
+no_txt_len = 0
+
+def fire_num():
+    global cur, conn, fire_count, non_fire_count, no_txt_len
+    time.sleep(5)
+    while(True):
+        dir_list = os.listdir(dir_PATH)
+        dir_count = len(dir_list)
+        if dir_count < 1:
+            continue
+        
+        file_list = os.listdir(labels_PATH)
+        file_count = len(file_list)
+        if file_count < 1:
+            continue
+        
+        label_list = sorted(glob.glob(txt_PATH), key=os.path.getctime, reverse=True)
+        first_list = label_list[0]
+        time.sleep(2)
+        label_list2 = sorted(glob.glob(txt_PATH), key=os.path.getctime, reverse=True)
+        second_list = label_list2[0]     
+        
+        with open(first_list) as a:   
+            txt_len = len(a.readlines())
+            a.close()
+            print('불 개수 :', txt_len)
+        
+        if first_list != second_list:   
+            fire_count += 1 
+            non_fire_count = 0
+            
+        else: 
+            fire_count == second_list
+            non_fire_count += 1
+            fire_count = 0
+
+        print('화재 상황 카운트 : ', fire_count)
+        print('화재 종료 카운트 : ', non_fire_count)
+        
+        if fire_count >= 2 and non_fire_count == 0:
+            sql = "INSERT INTO detect (detect_time, detect_num) VALUES (NOW(), %s);"
+            cur.execute(sql, (txt_len))
+            print("fire")
+
+        elif fire_count < 2 and non_fire_count < 2:
+            sql = "INSERT INTO detect (detect_time, detect_num) VALUES (NOW(), %s);"
+            cur.execute(sql, (no_txt_len))
+            print("loading") 
+
+        else:
+            non_fire_count >= 2 and fire_count == 0
+            sql = "INSERT INTO detect (detect_time, detect_num) VALUES (NOW(), %s);"
+            cur.execute(sql, (no_txt_len))
+            print("nofire")
+
+        conn.commit()
+        print('rowcount: ', cur.rowcount)
+
 def detect():
     global cap, frame_H, frame_W, stop_count
     while(True):
         dir_list = os.listdir(dir_PATH)
         dir_count = len(dir_list)
-        if dir_count < 1: #폴더가 없으면 아래 코드 무시 1개이상 있으면 아래 코드 실행
+        if dir_count < 1:
             continue
 
         f = open("C:/yolov5-master/runs/detect/exp/labels/_action_stream_0.txt", "w")
@@ -30,7 +100,7 @@ def detect():
 
         file_list = os.listdir(labels_PATH)
         file_count = len(file_list)
-        if file_count < 1: #폴더안에 좌표값txt가 없으면 아래 코드 무시 1개이상 있으면 아래 코드 실행
+        if file_count < 1:
             continue
         else:
             break
@@ -41,23 +111,16 @@ def detect():
         file_count2 = len(file_list2)
 
         label_list = sorted(glob.glob(txt_PATH), key=os.path.getctime, reverse=True)
-        first_list = label_list[0] #label폴더에서 마지막생성 좌표 경로 리스트 저장
+        first_list = label_list[0]
 
-        with open(first_list) as a:   #txt파일을 읽어 각 행 개수 파악
+        with open(first_list) as a:
             txt_len = len(a.readlines())
             a.close()
         
-        with open(first_list) as b: #txt파일을 읽어 각 행 좌표를 리스트에 저장
+        with open(first_list) as b:
             if txt_len == 1:
                 xywh1 = b.read().splitlines()
                 xywh1_1R = xywh1[0]
-                # print(xywh1_1R)
-                # print(xywh1_1R[6:11])
-                # print(xywh1_1R[12:17])
-                # print(xywh1_1R[18:23])
-                # print(xywh1_1R[24:29])
-                # print(float(xywh1_1R[6:11])*frame_H)
-                # print(int((float(xywh1_1R[6:11])*frame_W)-((float(xywh1_1R[18:23])/2)*frame_W)))
             elif txt_len == 2:
                 xywh2 = b.read().splitlines()
                 xywh2_1R = xywh2[0]
@@ -296,4 +359,8 @@ def detect():
         yield (b'--frame\r\n' b'Content-Type: image/jpeg\r\n\r\n' + frame2 + b'\r\n')
 
 if __name__== "__main__":
-    detect()
+    thread1 = threading.Thread(target=fire_num) 
+    thread2 = threading.Thread(target=detect) 
+    thread1.start() 
+    thread2.start()
+   

@@ -1,13 +1,9 @@
-from flask import Flask
-from flask import render_template
-from flask import Response
-from flask_detect import detect
-from DB_test03 import fire_num
-from multiprocessing import process
+import threading
+from flask import Flask, Response, render_template
+from detect_and_db01 import fire_num, detect
+
 
 app2 = Flask(__name__)
-
-
 
 @app2.route("/")
 def index():
@@ -23,11 +19,8 @@ def video_feed():
 
 
 if __name__== "__main__":
-    process_one = process(target = detect)
-    process_two = process(target = fire_num)
+    thread1 = threading.Thread(target = fire_num)
+    thread1.start()
 
-    process_one.start()
-    process_two.start()
-    
     app2.run(debug=True)
     
