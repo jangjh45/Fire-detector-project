@@ -80,4 +80,3 @@ if __name__=="__main__":
     thread2 = threading.Thread(target=uart) 
     thread1.start() 
     thread2.start() 
-   

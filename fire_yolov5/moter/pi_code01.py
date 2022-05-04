@@ -15,7 +15,7 @@ def temper():
                        password='0000',
                        charset='utf8',
                        db='fire_detect')
-
+    cur = conn.cursor()
     while(True):
         h, t = Adafruit_DHT.read_retry(sensor, pin)
         if (h is not None) and (t is not None) :
@@ -23,8 +23,8 @@ def temper():
             hum = ("{:.1f}".format(h))
             sql = "INSERT INTO temper (time, temperature, humidity) VALUES (NOW(), %s, %s);"
             cur.execute(sql, (tem, hum))
-            print(tem)
-            print(hum)
+            print("온도 : ", tem)
+            print("습도 : ", hum)
         else:
             continue
 
@@ -45,8 +45,8 @@ def readdb():
         cursor.execute(sql)
         result = cursor.fetchall()
         for record in result:
-            print(record[0])
-            print(record[1])
+            print("DB시간 : ", record[0])
+            print("DB불개수 : ", record[1])
         a = record[1]
         db.close()
         time.sleep(1)
@@ -103,10 +103,10 @@ def uart():
             continue
 
 if __name__=="__main__":
-    thread1 = threading.Thread(target=readdb) 
+    thread1 = threading.Thread(target=readdb)
     thread2 = threading.Thread(target=uart)
     thread3 = threading.Thread(target=temper)
-    thread1.start() 
+    thread1.start()
     thread2.start()
     thread3.start()
    
