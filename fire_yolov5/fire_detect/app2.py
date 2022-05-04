@@ -2,7 +2,6 @@ import threading
 from flask import Flask, Response, render_template
 from detect_and_db01 import fire_num, detect
 
-
 app2 = Flask(__name__)
 
 @app2.route("/")
@@ -21,6 +20,7 @@ def video_feed():
 if __name__== "__main__":
     thread1 = threading.Thread(target = fire_num)
     thread1.start()
-
+    
     app2.run(debug=True)
+    
     

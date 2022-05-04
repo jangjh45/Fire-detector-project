@@ -4,8 +4,7 @@ import Adafruit_DHT
 
 sensor = Adafruit_DHT.DHT11
 pin=18
-
-# 전역변수 선언부 
+ 
 db = None 
 cur = None
 
@@ -13,9 +12,9 @@ conn = pymysql.connect(host='20.194.30.39',
                        user='fire',
                        password='0000',
                        charset='utf8',
-                       db='fire_detect') #DB 연결
+                       db='fire_detect')
                         
-cur = conn.cursor() #디폴트 커서 생성
+cur = conn.cursor()
 
 def temper():
     global db, cur, conn

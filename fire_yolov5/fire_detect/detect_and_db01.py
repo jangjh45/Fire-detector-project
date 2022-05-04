@@ -6,7 +6,7 @@ import pymysql
 import threading
 from rmfile import *
 
-rtsp_PATH = 'http://192.168.0.11:50036/?action=stream'
+rtsp_PATH = 'http://192.168.1.202:50036/?action=stream'
 dir_PATH = 'C:/yolov5-master/runs'
 labels_PATH = 'C:/yolov5-master/runs/detect/exp/labels'
 txt_PATH = 'C:/yolov5-master/runs/detect/exp/labels/*.txt'
