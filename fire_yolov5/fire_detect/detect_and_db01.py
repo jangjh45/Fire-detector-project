@@ -6,7 +6,7 @@ import pymysql
 import threading
 from rmfile import *
 
-rtsp_PATH = 'http://192.168.1.202:50036/?action=stream'
+rtsp_PATH = 'http://192.168.0.43:50036/?action=stream'
 dir_PATH = 'C:/yolov5-master/runs'
 labels_PATH = 'C:/yolov5-master/runs/detect/exp/labels'
 txt_PATH = 'C:/yolov5-master/runs/detect/exp/labels/*.txt'
@@ -32,8 +32,9 @@ no_txt_len = 0
 
 def fire_num():
     global cur, conn, fire_count, non_fire_count, no_txt_len
-    time.sleep(5)
+    time.sleep(10)
     while(True):
+        time.sleep(2)
         dir_list = os.listdir(dir_PATH)
         dir_count = len(dir_list)
         if dir_count < 1:
@@ -84,7 +85,7 @@ def fire_num():
             print("nofire")
 
         conn.commit()
-        print('rowcount: ', cur.rowcount)
+        print('DB전송카운트 : ', cur.rowcount)
 
 def detect():
     global cap, frame_H, frame_W, stop_count
