@@ -1,8 +1,8 @@
 import os
-import cv2
-import shutil
 import glob
 import time
+import shutil
+import cv2
 import pymysql
 import threading
 
@@ -57,7 +57,6 @@ def fire_num():
         with open(first_list) as a:   
             txt_len = len(a.readlines())
             a.close()
-            print('불 개수 :', txt_len)
         
         if first_list != second_list:   
             fire_count += 1 
@@ -68,9 +67,6 @@ def fire_num():
             non_fire_count += 1
             fire_count = 0
 
-        print('화재 상황 카운트 : ', fire_count)
-        print('화재 종료 카운트 : ', non_fire_count)
-        
         if fire_count >= 2 and non_fire_count == 0:
             sql = "INSERT INTO detect (detect_time, detect_num) VALUES (NOW(), %s);"
             cur.execute(sql, (txt_len))
@@ -361,6 +357,10 @@ def detect():
         ret, buffer = cv2.imencode('.jpg', frame)
         frame2 = buffer.tobytes()
         yield (b'--frame\r\n' b'Content-Type: image/jpeg\r\n\r\n' + frame2 + b'\r\n')
+
+        # cv2.imshow("fire_detect_video", frame)
+        # if cv2.waitKey(1) & 0xFF == ord('q'):
+        #     break
 
 if __name__== "__main__":
     thread1 = threading.Thread(target=fire_num) 

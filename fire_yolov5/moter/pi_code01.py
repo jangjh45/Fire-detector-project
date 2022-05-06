@@ -1,7 +1,7 @@
-import time
-import pymysql
-import serial
 import threading
+import time
+import serial
+import pymysql
 import Adafruit_DHT
 
 a = None
