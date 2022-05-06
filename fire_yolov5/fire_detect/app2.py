@@ -16,4 +16,4 @@ def video_feed():
 if __name__== "__main__":
     thread1 = threading.Thread(target=fire_num)
     thread1.start()
-    app2.run(debug=True)   
+    app2.run(debug=True)
