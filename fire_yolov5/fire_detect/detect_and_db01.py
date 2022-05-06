@@ -1,10 +1,14 @@
 import os
 import cv2
+import shutil
 import glob
 import time
 import pymysql
 import threading
-from rmfile import *
+
+rmfile_PATH = 'C:/yolov5-master/runs/detect'
+if os.path.exists(rmfile_PATH):
+    shutil.rmtree(rmfile_PATH)
 
 rtsp_PATH = 'http://192.168.0.43:50036/?action=stream'
 dir_PATH = 'C:/yolov5-master/runs'
@@ -34,7 +38,6 @@ def fire_num():
     global cur, conn, fire_count, non_fire_count, no_txt_len
     time.sleep(10)
     while(True):
-        time.sleep(2)
         dir_list = os.listdir(dir_PATH)
         dir_count = len(dir_list)
         if dir_count < 1:
