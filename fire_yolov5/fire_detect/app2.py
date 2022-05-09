@@ -6,7 +6,7 @@ app2 = Flask(__name__)
 
 @app2.route("/")
 def index():
-    return render_template("index.html")
+    return render_template("index2.html")
 
 @app2.route('/video_feed')
 def video_feed():
