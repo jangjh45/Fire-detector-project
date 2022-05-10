@@ -141,12 +141,10 @@ def detect():
         else:
             stop_count = 0
 
-        dir_list3 = os.listdir(labels_PATH)
-        dir_count3 = len(dir_list3)
-        if dir_count3 > 100:
-            label_list3 = sorted(glob.glob(txt_PATH), key=os.path.getctime, reverse=False)
-            first_list3 = label_list3[0]
-            os.remove(first_list3)
+        if file_count3 > 50:
+            label_list2 = sorted(glob.glob(txt_PATH), key=os.path.getctime, reverse=True)
+            rm_list = label_list2[-1]
+            os.remove(rm_list)
         else:
             pass
 
