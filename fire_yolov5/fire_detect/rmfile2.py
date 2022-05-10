@@ -12,12 +12,12 @@ while(True):
     dir_count = len(dir_list)
     print(dir_count)
     label_list = sorted(glob.glob(txt_PATH), key=os.path.getctime, reverse=False)
-    first_list = label_list[0:6]
+    first_list = label_list[0]
     print(first_list)
 
-    # if dir_count > 100:
-    #     os.remove(first_list)
-    # else:
-    #     continue
+    if dir_count > 50:
+        os.remove(first_list)
+    else:
+        pass
 
     time.sleep(2)

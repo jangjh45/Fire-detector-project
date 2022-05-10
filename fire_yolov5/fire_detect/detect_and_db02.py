@@ -9,66 +9,32 @@ rmfile_PATH = 'C:/yolov5-master/runs/detect'
 if os.path.exists(rmfile_PATH):
     shutil.rmtree(rmfile_PATH)
 
-rtsp_PATH = 'http://192.168.1.202:50036/?action=stream'
+rtsp_PATH = 'http://192.168.0.11:50036/?action=stream'
 dir_PATH = 'C:/yolov5-master/runs'
 labels_PATH = 'C:/yolov5-master/runs/detect/exp/labels'
 txt_PATH = 'C:/yolov5-master/runs/detect/exp/labels/*.txt'
 cv_text = 'fire'
 loading = 'waiting to be detected'
 
-cap = cv2.VideoCapture(rtsp_PATH)
-frame_W = 640
-frame_H = 480
-stop_count = 0
-
-cur = None
-conn = pymysql.connect(host='20.194.30.39',
+def fire_num():
+    time.sleep(10)
+    conn = pymysql.connect(host='20.194.30.39',
                        user='fire',
                        password='0000',
                        charset='utf8',
                        db='fire_detect')           
-cur = conn.cursor()
+    cur = conn.cursor()
+    
+    fire_count = 0
+    non_fire_count = 0
+    no_txt_len = 0
 
-fire_count = 0
-non_fire_count = 0
-no_txt_len = 0
-
-def rmtxt():
-    time.sleep(10)
     while(True):
-        dir_list = os.listdir(labels_PATH)
-        dir_count = len(dir_list)
-        print(dir_count)
-        label_list = sorted(glob.glob(txt_PATH), key=os.path.getctime, reverse=False)
-        first_list = label_list[0]
-        #print(first_list)
-
-        if dir_count > 50:
-            os.remove(first_list)
-        else:
-            continue
-        time.sleep(0.5)
-
-
-def fire_num():
-    global cur, conn, fire_count, non_fire_count, no_txt_len
-    time.sleep(10)
-    while(True):
-        dir_list = os.listdir(dir_PATH)
-        dir_count = len(dir_list)
-        if dir_count < 1:
-            continue
-        
-        file_list = os.listdir(labels_PATH)
-        file_count = len(file_list)
-        if file_count < 1:
-            continue
-        
         label_list = sorted(glob.glob(txt_PATH), key=os.path.getctime, reverse=True)
         first_list = label_list[0]
-        time.sleep(2)
+        time.sleep(1)
         label_list2 = sorted(glob.glob(txt_PATH), key=os.path.getctime, reverse=True)
-        second_list = label_list2[0]     
+        second_list = label_list2[0]    
         
         with open(first_list) as a:   
             txt_len = len(a.readlines())
@@ -83,18 +49,18 @@ def fire_num():
             non_fire_count += 1
             fire_count = 0
 
-        if fire_count >= 2 and non_fire_count == 0:
+        if fire_count >= 3 and non_fire_count == 0:
             sql = "INSERT INTO detect (detect_time, detect_num) VALUES (NOW(), %s);"
             cur.execute(sql, (txt_len))
             print("fire")
 
-        elif fire_count < 2 and non_fire_count < 2:
+        elif fire_count < 3 and non_fire_count < 3:
             sql = "INSERT INTO detect (detect_time, detect_num) VALUES (NOW(), %s);"
             cur.execute(sql, (no_txt_len))
             print("loading") 
 
         else:
-            non_fire_count >= 2 and fire_count == 0
+            non_fire_count >= 3 and fire_count == 0
             sql = "INSERT INTO detect (detect_time, detect_num) VALUES (NOW(), %s);"
             cur.execute(sql, (no_txt_len))
             print("nofire")
@@ -103,7 +69,11 @@ def fire_num():
         print('DB전송카운트 : ', cur.rowcount)
 
 def detect():
-    global cap, frame_H, frame_W, stop_count
+    cap = cv2.VideoCapture(rtsp_PATH)
+    frame_W = 640
+    frame_H = 480
+    stop_count = 0
+    
     while(True):
         dir_list = os.listdir(dir_PATH)
         dir_count = len(dir_list)
@@ -171,7 +141,16 @@ def detect():
         else:
             stop_count = 0
 
-        if stop_count < 100:
+        dir_list3 = os.listdir(labels_PATH)
+        dir_count3 = len(dir_list3)
+        if dir_count3 > 100:
+            label_list3 = sorted(glob.glob(txt_PATH), key=os.path.getctime, reverse=False)
+            first_list3 = label_list3[0]
+            os.remove(first_list3)
+        else:
+            pass
+
+        if stop_count < 50:
             if txt_len == 1:
                 cv2.rectangle(frame, 
                 (int((float(xywh1_1R[6:11])*frame_W)-((float(xywh1_1R[18:23])/2)*frame_W)),
@@ -356,15 +335,17 @@ def detect():
                 int((float(xywh5_5R[12:17])*frame_H)-((float(xywh5_5R[24:29])/2)*frame_H))), 
                 cv2.FONT_HERSHEY_SIMPLEX, 0.9,
                 (0, 0, 255), 2, cv2.LINE_AA)
+            
             else:
                 cv2.rectangle(frame, (0, 0), (640, 480), (0, 255, 0), 3)
                 cv2.putText(frame, loading, (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 0.9,
                 (0, 255, 0), 2, cv2.LINE_AA)
 
-        elif stop_count > 100:
+        elif stop_count > 50:
             cv2.rectangle(frame, (0, 0), (640, 480), (0, 255, 0), 3)
             cv2.putText(frame, loading, (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 0.9,
                 (0, 255, 0), 2, cv2.LINE_AA)
+        
         else:
             cv2.rectangle(frame, (0, 0), (640, 480), (0, 255, 0), 3)
             cv2.putText(frame, loading, (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 0.9,
