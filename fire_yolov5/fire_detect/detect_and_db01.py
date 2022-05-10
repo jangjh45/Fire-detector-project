@@ -4,7 +4,6 @@ import time
 import shutil
 import cv2
 import pymysql
-import threading
 
 rmfile_PATH = 'C:/yolov5-master/runs/detect'
 if os.path.exists(rmfile_PATH):
@@ -357,14 +356,3 @@ def detect():
         ret, buffer = cv2.imencode('.jpg', frame)
         frame2 = buffer.tobytes()
         yield (b'--frame\r\n' b'Content-Type: image/jpeg\r\n\r\n' + frame2 + b'\r\n')
-
-        # cv2.imshow("fire_detect_video", frame)
-        # if cv2.waitKey(1) & 0xFF == ord('q'):
-        #     break
-
-if __name__== "__main__":
-    thread1 = threading.Thread(target=fire_num) 
-    thread2 = threading.Thread(target=detect) 
-    thread1.start() 
-    thread2.start()
-   

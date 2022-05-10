@@ -4,7 +4,6 @@ import time
 import shutil
 import cv2
 import pymysql
-import threading
 
 rmfile_PATH = 'C:/yolov5-master/runs/detect'
 if os.path.exists(rmfile_PATH):
@@ -34,13 +33,23 @@ fire_count = 0
 non_fire_count = 0
 no_txt_len = 0
 
-def rmdetect():
+def rmtxt():
+    time.sleep(10)
     while(True):
-        if os.path.exists(labels_PATH):
-            for file in os.scandir(labels_PATH):
-                os.remove(file.path)
-        time.sleep(10)
-    
+        dir_list = os.listdir(labels_PATH)
+        dir_count = len(dir_list)
+        print(dir_count)
+        label_list = sorted(glob.glob(txt_PATH), key=os.path.getctime, reverse=False)
+        first_list = label_list[0]
+        #print(first_list)
+
+        if dir_count > 50:
+            os.remove(first_list)
+        else:
+            continue
+        time.sleep(0.5)
+
+
 def fire_num():
     global cur, conn, fire_count, non_fire_count, no_txt_len
     time.sleep(10)
@@ -364,14 +373,3 @@ def detect():
         ret, buffer = cv2.imencode('.jpg', frame)
         frame2 = buffer.tobytes()
         yield (b'--frame\r\n' b'Content-Type: image/jpeg\r\n\r\n' + frame2 + b'\r\n')
-
-        # cv2.imshow("fire_detect_video", frame)
-        # if cv2.waitKey(1) & 0xFF == ord('q'):
-        #     break
-
-if __name__== "__main__":
-    thread1 = threading.Thread(target=fire_num) 
-    thread2 = threading.Thread(target=detect) 
-    thread1.start() 
-    thread2.start()
-   
