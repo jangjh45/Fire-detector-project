@@ -58,8 +58,7 @@ while(True):
         fire_count += 1 
         non_fire_count = 0
             
-    else: 
-        fire_count == second_list
+    else:
         non_fire_count += 1
         fire_count = 0
 

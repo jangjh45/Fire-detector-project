@@ -9,20 +9,19 @@ rmfile_PATH = 'C:/yolov5-master/runs/detect'
 if os.path.exists(rmfile_PATH):
     shutil.rmtree(rmfile_PATH)
 
-rtsp_PATH = 'http://192.168.0.11:50036/?action=stream'
+rtsp_PATH = 'http://192.168.1.202:50036/?action=stream'
 dir_PATH = 'C:/yolov5-master/runs'
 labels_PATH = 'C:/yolov5-master/runs/detect/exp/labels'
 txt_PATH = 'C:/yolov5-master/runs/detect/exp/labels/*.txt'
 cv_text = 'fire'
-loading = 'waiting to be detected'
 
 def fire_num():
     time.sleep(10)
     conn = pymysql.connect(host='20.194.30.39',
-                       user='fire',
-                       password='0000',
-                       charset='utf8',
-                       db='fire_detect')           
+                           user='fire',
+                           password='0000',
+                           charset='utf8',
+                           db='fire_detect')           
     cur = conn.cursor()
     
     fire_count = 0
@@ -30,6 +29,22 @@ def fire_num():
     no_txt_len = 0
 
     while(True):
+        dir_list = os.listdir(dir_PATH)
+        dir_count = len(dir_list)
+        if dir_count < 1:
+            continue
+        else:
+            pass
+
+        file_list = os.listdir(labels_PATH)
+        file_count = len(file_list)
+        if file_count < 1:
+            continue
+        else:
+            break
+
+    while(True):
+        time.sleep(0.1)
         label_list = sorted(glob.glob(txt_PATH), key=os.path.getctime, reverse=True)
         first_list = label_list[0]
         time.sleep(1)
@@ -45,22 +60,21 @@ def fire_num():
             non_fire_count = 0
             
         else: 
-            fire_count == second_list
             non_fire_count += 1
             fire_count = 0
 
-        if fire_count >= 3 and non_fire_count == 0:
+        if fire_count >= 2 and non_fire_count == 0:
             sql = "INSERT INTO detect (detect_time, detect_num) VALUES (NOW(), %s);"
             cur.execute(sql, (txt_len))
             print("fire")
 
-        elif fire_count < 3 and non_fire_count < 3:
+        elif fire_count < 2 and non_fire_count < 2:
             sql = "INSERT INTO detect (detect_time, detect_num) VALUES (NOW(), %s);"
             cur.execute(sql, (no_txt_len))
             print("loading") 
 
         else:
-            non_fire_count >= 3 and fire_count == 0
+            non_fire_count >= 2 and fire_count == 0
             sql = "INSERT INTO detect (detect_time, detect_num) VALUES (NOW(), %s);"
             cur.execute(sql, (no_txt_len))
             print("nofire")
@@ -79,18 +93,14 @@ def detect():
         dir_count = len(dir_list)
         if dir_count < 1:
             continue
+        else:
+            pass
 
         f = open("C:/yolov5-master/runs/detect/exp/labels/_action_stream_0.txt", "w")
         f.write("0.000 0.500 0.500 1.000 1.000")
         f.close()
-
-        file_list = os.listdir(labels_PATH)
-        file_count = len(file_list)
-        if file_count < 1:
-            continue
-        else:
-            break
-
+        break
+        
     while(True):
         ret, frame = cap.read()
         file_list2 = os.listdir(labels_PATH)
@@ -130,6 +140,7 @@ def detect():
                 xywh5_4R = xywh5[3]
                 xywh5_5R = xywh5[4]
             else:
+                b.close()
                 continue
             b.close()
         
@@ -150,7 +161,7 @@ def detect():
 
         if stop_count < 50:
             if txt_len == 1:
-                cv2.rectangle(frame, 
+                cv2.rectangle(frame,
                 (int((float(xywh1_1R[6:11])*frame_W)-((float(xywh1_1R[18:23])/2)*frame_W)),
                 int((float(xywh1_1R[12:17])*frame_H)-((float(xywh1_1R[24:29])/2)*frame_H)),
                 int((float(xywh1_1R[18:23]))*frame_W),
@@ -161,9 +172,8 @@ def detect():
                 int((float(xywh1_1R[12:17])*frame_H)-((float(xywh1_1R[24:29])/2)*frame_H))), 
                 cv2.FONT_HERSHEY_SIMPLEX, 0.9,
                 (0, 0, 255), 2, cv2.LINE_AA)
-
             elif txt_len == 2:
-                cv2.rectangle(frame, 
+                cv2.rectangle(frame,
                 (int((float(xywh2_1R[6:11])*frame_W)-((float(xywh2_1R[18:23])/2)*frame_W)),
                 int((float(xywh2_1R[12:17])*frame_H)-((float(xywh2_1R[24:29])/2)*frame_H)),
                 int((float(xywh2_1R[18:23]))*frame_W),
@@ -175,7 +185,7 @@ def detect():
                 cv2.FONT_HERSHEY_SIMPLEX, 0.9,
                 (0, 0, 255), 2, cv2.LINE_AA)
 
-                cv2.rectangle(frame, 
+                cv2.rectangle(frame,
                 (int((float(xywh2_2R[6:11])*frame_W)-((float(xywh2_2R[18:23])/2)*frame_W)),
                 int((float(xywh2_2R[12:17])*frame_H)-((float(xywh2_2R[24:29])/2)*frame_H)),
                 int((float(xywh2_2R[18:23]))*frame_W),
@@ -186,9 +196,8 @@ def detect():
                 int((float(xywh2_2R[12:17])*frame_H)-((float(xywh2_2R[24:29])/2)*frame_H))), 
                 cv2.FONT_HERSHEY_SIMPLEX, 0.9,
                 (0, 0, 255), 2, cv2.LINE_AA)
-
             elif txt_len == 3:
-                cv2.rectangle(frame, 
+                cv2.rectangle(frame,
                 (int((float(xywh3_1R[6:11])*frame_W)-((float(xywh3_1R[18:23])/2)*frame_W)),
                 int((float(xywh3_1R[12:17])*frame_H)-((float(xywh3_1R[24:29])/2)*frame_H)),
                 int((float(xywh3_1R[18:23]))*frame_W),
@@ -200,7 +209,7 @@ def detect():
                 cv2.FONT_HERSHEY_SIMPLEX, 0.9,
                 (0, 0, 255), 2, cv2.LINE_AA)
 
-                cv2.rectangle(frame, 
+                cv2.rectangle(frame,
                 (int((float(xywh3_2R[6:11])*frame_W)-((float(xywh3_2R[18:23])/2)*frame_W)),
                 int((float(xywh3_2R[12:17])*frame_H)-((float(xywh3_2R[24:29])/2)*frame_H)),
                 int((float(xywh3_2R[18:23]))*frame_W),
@@ -212,7 +221,7 @@ def detect():
                 cv2.FONT_HERSHEY_SIMPLEX, 0.9,
                 (0, 0, 255), 2, cv2.LINE_AA)
 
-                cv2.rectangle(frame, 
+                cv2.rectangle(frame,
                 (int((float(xywh3_3R[6:11])*frame_W)-((float(xywh3_3R[18:23])/2)*frame_W)),
                 int((float(xywh3_3R[12:17])*frame_H)-((float(xywh3_3R[24:29])/2)*frame_H)),
                 int((float(xywh3_3R[18:23]))*frame_W),
@@ -223,9 +232,8 @@ def detect():
                 int((float(xywh3_3R[12:17])*frame_H)-((float(xywh3_3R[24:29])/2)*frame_H))), 
                 cv2.FONT_HERSHEY_SIMPLEX, 0.9,
                 (0, 0, 255), 2, cv2.LINE_AA)
-
             elif txt_len == 4:
-                cv2.rectangle(frame, 
+                cv2.rectangle(frame,
                 (int((float(xywh4_1R[6:11])*frame_W)-((float(xywh4_1R[18:23])/2)*frame_W)),
                 int((float(xywh4_1R[12:17])*frame_H)-((float(xywh4_1R[24:29])/2)*frame_H)),
                 int((float(xywh4_1R[18:23]))*frame_W),
@@ -237,7 +245,7 @@ def detect():
                 cv2.FONT_HERSHEY_SIMPLEX, 0.9,
                 (0, 0, 255), 2, cv2.LINE_AA)
 
-                cv2.rectangle(frame, 
+                cv2.rectangle(frame,
                 (int((float(xywh4_2R[6:11])*frame_W)-((float(xywh4_2R[18:23])/2)*frame_W)),
                 int((float(xywh4_2R[12:17])*frame_H)-((float(xywh4_2R[24:29])/2)*frame_H)),
                 int((float(xywh4_2R[18:23]))*frame_W),
@@ -249,7 +257,7 @@ def detect():
                 cv2.FONT_HERSHEY_SIMPLEX, 0.9,
                 (0, 0, 255), 2, cv2.LINE_AA)
 
-                cv2.rectangle(frame, 
+                cv2.rectangle(frame,
                 (int((float(xywh4_3R[6:11])*frame_W)-((float(xywh4_3R[18:23])/2)*frame_W)),
                 int((float(xywh4_3R[12:17])*frame_H)-((float(xywh4_3R[24:29])/2)*frame_H)),
                 int((float(xywh4_3R[18:23]))*frame_W),
@@ -261,7 +269,7 @@ def detect():
                 cv2.FONT_HERSHEY_SIMPLEX, 0.9,
                 (0, 0, 255), 2, cv2.LINE_AA)
 
-                cv2.rectangle(frame, 
+                cv2.rectangle(frame,
                 (int((float(xywh4_4R[6:11])*frame_W)-((float(xywh4_4R[18:23])/2)*frame_W)),
                 int((float(xywh4_4R[12:17])*frame_H)-((float(xywh4_4R[24:29])/2)*frame_H)),
                 int((float(xywh4_4R[18:23]))*frame_W),
@@ -272,9 +280,8 @@ def detect():
                 int((float(xywh4_4R[12:17])*frame_H)-((float(xywh4_4R[24:29])/2)*frame_H))), 
                 cv2.FONT_HERSHEY_SIMPLEX, 0.9,
                 (0, 0, 255), 2, cv2.LINE_AA)
-            
             elif txt_len == 5:
-                cv2.rectangle(frame, 
+                cv2.rectangle(frame,
                 (int((float(xywh5_1R[6:11])*frame_W)-((float(xywh5_1R[18:23])/2)*frame_W)),
                 int((float(xywh5_1R[12:17])*frame_H)-((float(xywh5_1R[24:29])/2)*frame_H)),
                 int((float(xywh5_1R[18:23]))*frame_W),
@@ -286,7 +293,7 @@ def detect():
                 cv2.FONT_HERSHEY_SIMPLEX, 0.9,
                 (0, 0, 255), 2, cv2.LINE_AA)
 
-                cv2.rectangle(frame, 
+                cv2.rectangle(frame,
                 (int((float(xywh5_2R[6:11])*frame_W)-((float(xywh5_2R[18:23])/2)*frame_W)),
                 int((float(xywh5_2R[12:17])*frame_H)-((float(xywh5_2R[24:29])/2)*frame_H)),
                 int((float(xywh5_2R[18:23]))*frame_W),
@@ -298,7 +305,7 @@ def detect():
                 cv2.FONT_HERSHEY_SIMPLEX, 0.9,
                 (0, 0, 255), 2, cv2.LINE_AA)
 
-                cv2.rectangle(frame, 
+                cv2.rectangle(frame,
                 (int((float(xywh5_3R[6:11])*frame_W)-((float(xywh5_3R[18:23])/2)*frame_W)),
                 int((float(xywh5_3R[12:17])*frame_H)-((float(xywh5_3R[24:29])/2)*frame_H)),
                 int((float(xywh5_3R[18:23]))*frame_W),
@@ -310,7 +317,7 @@ def detect():
                 cv2.FONT_HERSHEY_SIMPLEX, 0.9,
                 (0, 0, 255), 2, cv2.LINE_AA)
 
-                cv2.rectangle(frame, 
+                cv2.rectangle(frame,
                 (int((float(xywh5_4R[6:11])*frame_W)-((float(xywh5_4R[18:23])/2)*frame_W)),
                 int((float(xywh5_4R[12:17])*frame_H)-((float(xywh5_4R[24:29])/2)*frame_H)),
                 int((float(xywh5_4R[18:23]))*frame_W),
@@ -322,7 +329,7 @@ def detect():
                 cv2.FONT_HERSHEY_SIMPLEX, 0.9,
                 (0, 0, 255), 2, cv2.LINE_AA)
 
-                cv2.rectangle(frame, 
+                cv2.rectangle(frame,
                 (int((float(xywh5_5R[6:11])*frame_W)-((float(xywh5_5R[18:23])/2)*frame_W)),
                 int((float(xywh5_5R[12:17])*frame_H)-((float(xywh5_5R[24:29])/2)*frame_H)),
                 int((float(xywh5_5R[18:23]))*frame_W),
@@ -333,21 +340,10 @@ def detect():
                 int((float(xywh5_5R[12:17])*frame_H)-((float(xywh5_5R[24:29])/2)*frame_H))), 
                 cv2.FONT_HERSHEY_SIMPLEX, 0.9,
                 (0, 0, 255), 2, cv2.LINE_AA)
-            
             else:
-                cv2.rectangle(frame, (0, 0), (640, 480), (0, 255, 0), 3)
-                cv2.putText(frame, loading, (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 0.9,
-                (0, 255, 0), 2, cv2.LINE_AA)
-
-        elif stop_count > 50:
-            cv2.rectangle(frame, (0, 0), (640, 480), (0, 255, 0), 3)
-            cv2.putText(frame, loading, (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 0.9,
-                (0, 255, 0), 2, cv2.LINE_AA)
-        
+                pass
         else:
-            cv2.rectangle(frame, (0, 0), (640, 480), (0, 255, 0), 3)
-            cv2.putText(frame, loading, (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 0.9,
-                (0, 255, 0), 2, cv2.LINE_AA)
+            pass
 
         ret, buffer = cv2.imencode('.jpg', frame)
         frame2 = buffer.tobytes()

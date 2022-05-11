@@ -49,7 +49,7 @@ def fire_num():
         
         label_list = sorted(glob.glob(txt_PATH), key=os.path.getctime, reverse=True)
         first_list = label_list[0]
-        time.sleep(2)
+        time.sleep(1)
         label_list2 = sorted(glob.glob(txt_PATH), key=os.path.getctime, reverse=True)
         second_list = label_list2[0]     
         
@@ -61,8 +61,7 @@ def fire_num():
             fire_count += 1 
             non_fire_count = 0
             
-        else: 
-            fire_count == second_list
+        else:
             non_fire_count += 1
             fire_count = 0
 
@@ -154,9 +153,9 @@ def detect():
         else:
             stop_count = 0
 
-        if stop_count < 100:
+        if stop_count < 50:
             if txt_len == 1:
-                cv2.rectangle(frame, 
+                cv2.rectangle(frame,
                 (int((float(xywh1_1R[6:11])*frame_W)-((float(xywh1_1R[18:23])/2)*frame_W)),
                 int((float(xywh1_1R[12:17])*frame_H)-((float(xywh1_1R[24:29])/2)*frame_H)),
                 int((float(xywh1_1R[18:23]))*frame_W),
@@ -167,9 +166,8 @@ def detect():
                 int((float(xywh1_1R[12:17])*frame_H)-((float(xywh1_1R[24:29])/2)*frame_H))), 
                 cv2.FONT_HERSHEY_SIMPLEX, 0.9,
                 (0, 0, 255), 2, cv2.LINE_AA)
-
             elif txt_len == 2:
-                cv2.rectangle(frame, 
+                cv2.rectangle(frame,
                 (int((float(xywh2_1R[6:11])*frame_W)-((float(xywh2_1R[18:23])/2)*frame_W)),
                 int((float(xywh2_1R[12:17])*frame_H)-((float(xywh2_1R[24:29])/2)*frame_H)),
                 int((float(xywh2_1R[18:23]))*frame_W),
@@ -181,7 +179,7 @@ def detect():
                 cv2.FONT_HERSHEY_SIMPLEX, 0.9,
                 (0, 0, 255), 2, cv2.LINE_AA)
 
-                cv2.rectangle(frame, 
+                cv2.rectangle(frame,
                 (int((float(xywh2_2R[6:11])*frame_W)-((float(xywh2_2R[18:23])/2)*frame_W)),
                 int((float(xywh2_2R[12:17])*frame_H)-((float(xywh2_2R[24:29])/2)*frame_H)),
                 int((float(xywh2_2R[18:23]))*frame_W),
@@ -192,9 +190,8 @@ def detect():
                 int((float(xywh2_2R[12:17])*frame_H)-((float(xywh2_2R[24:29])/2)*frame_H))), 
                 cv2.FONT_HERSHEY_SIMPLEX, 0.9,
                 (0, 0, 255), 2, cv2.LINE_AA)
-
             elif txt_len == 3:
-                cv2.rectangle(frame, 
+                cv2.rectangle(frame,
                 (int((float(xywh3_1R[6:11])*frame_W)-((float(xywh3_1R[18:23])/2)*frame_W)),
                 int((float(xywh3_1R[12:17])*frame_H)-((float(xywh3_1R[24:29])/2)*frame_H)),
                 int((float(xywh3_1R[18:23]))*frame_W),
@@ -206,7 +203,7 @@ def detect():
                 cv2.FONT_HERSHEY_SIMPLEX, 0.9,
                 (0, 0, 255), 2, cv2.LINE_AA)
 
-                cv2.rectangle(frame, 
+                cv2.rectangle(frame,
                 (int((float(xywh3_2R[6:11])*frame_W)-((float(xywh3_2R[18:23])/2)*frame_W)),
                 int((float(xywh3_2R[12:17])*frame_H)-((float(xywh3_2R[24:29])/2)*frame_H)),
                 int((float(xywh3_2R[18:23]))*frame_W),
@@ -218,7 +215,7 @@ def detect():
                 cv2.FONT_HERSHEY_SIMPLEX, 0.9,
                 (0, 0, 255), 2, cv2.LINE_AA)
 
-                cv2.rectangle(frame, 
+                cv2.rectangle(frame,
                 (int((float(xywh3_3R[6:11])*frame_W)-((float(xywh3_3R[18:23])/2)*frame_W)),
                 int((float(xywh3_3R[12:17])*frame_H)-((float(xywh3_3R[24:29])/2)*frame_H)),
                 int((float(xywh3_3R[18:23]))*frame_W),
@@ -229,9 +226,8 @@ def detect():
                 int((float(xywh3_3R[12:17])*frame_H)-((float(xywh3_3R[24:29])/2)*frame_H))), 
                 cv2.FONT_HERSHEY_SIMPLEX, 0.9,
                 (0, 0, 255), 2, cv2.LINE_AA)
-
             elif txt_len == 4:
-                cv2.rectangle(frame, 
+                cv2.rectangle(frame,
                 (int((float(xywh4_1R[6:11])*frame_W)-((float(xywh4_1R[18:23])/2)*frame_W)),
                 int((float(xywh4_1R[12:17])*frame_H)-((float(xywh4_1R[24:29])/2)*frame_H)),
                 int((float(xywh4_1R[18:23]))*frame_W),
@@ -243,7 +239,7 @@ def detect():
                 cv2.FONT_HERSHEY_SIMPLEX, 0.9,
                 (0, 0, 255), 2, cv2.LINE_AA)
 
-                cv2.rectangle(frame, 
+                cv2.rectangle(frame,
                 (int((float(xywh4_2R[6:11])*frame_W)-((float(xywh4_2R[18:23])/2)*frame_W)),
                 int((float(xywh4_2R[12:17])*frame_H)-((float(xywh4_2R[24:29])/2)*frame_H)),
                 int((float(xywh4_2R[18:23]))*frame_W),
@@ -255,7 +251,7 @@ def detect():
                 cv2.FONT_HERSHEY_SIMPLEX, 0.9,
                 (0, 0, 255), 2, cv2.LINE_AA)
 
-                cv2.rectangle(frame, 
+                cv2.rectangle(frame,
                 (int((float(xywh4_3R[6:11])*frame_W)-((float(xywh4_3R[18:23])/2)*frame_W)),
                 int((float(xywh4_3R[12:17])*frame_H)-((float(xywh4_3R[24:29])/2)*frame_H)),
                 int((float(xywh4_3R[18:23]))*frame_W),
@@ -267,7 +263,7 @@ def detect():
                 cv2.FONT_HERSHEY_SIMPLEX, 0.9,
                 (0, 0, 255), 2, cv2.LINE_AA)
 
-                cv2.rectangle(frame, 
+                cv2.rectangle(frame,
                 (int((float(xywh4_4R[6:11])*frame_W)-((float(xywh4_4R[18:23])/2)*frame_W)),
                 int((float(xywh4_4R[12:17])*frame_H)-((float(xywh4_4R[24:29])/2)*frame_H)),
                 int((float(xywh4_4R[18:23]))*frame_W),
@@ -278,9 +274,8 @@ def detect():
                 int((float(xywh4_4R[12:17])*frame_H)-((float(xywh4_4R[24:29])/2)*frame_H))), 
                 cv2.FONT_HERSHEY_SIMPLEX, 0.9,
                 (0, 0, 255), 2, cv2.LINE_AA)
-            
             elif txt_len == 5:
-                cv2.rectangle(frame, 
+                cv2.rectangle(frame,
                 (int((float(xywh5_1R[6:11])*frame_W)-((float(xywh5_1R[18:23])/2)*frame_W)),
                 int((float(xywh5_1R[12:17])*frame_H)-((float(xywh5_1R[24:29])/2)*frame_H)),
                 int((float(xywh5_1R[18:23]))*frame_W),
@@ -292,7 +287,7 @@ def detect():
                 cv2.FONT_HERSHEY_SIMPLEX, 0.9,
                 (0, 0, 255), 2, cv2.LINE_AA)
 
-                cv2.rectangle(frame, 
+                cv2.rectangle(frame,
                 (int((float(xywh5_2R[6:11])*frame_W)-((float(xywh5_2R[18:23])/2)*frame_W)),
                 int((float(xywh5_2R[12:17])*frame_H)-((float(xywh5_2R[24:29])/2)*frame_H)),
                 int((float(xywh5_2R[18:23]))*frame_W),
@@ -304,7 +299,7 @@ def detect():
                 cv2.FONT_HERSHEY_SIMPLEX, 0.9,
                 (0, 0, 255), 2, cv2.LINE_AA)
 
-                cv2.rectangle(frame, 
+                cv2.rectangle(frame,
                 (int((float(xywh5_3R[6:11])*frame_W)-((float(xywh5_3R[18:23])/2)*frame_W)),
                 int((float(xywh5_3R[12:17])*frame_H)-((float(xywh5_3R[24:29])/2)*frame_H)),
                 int((float(xywh5_3R[18:23]))*frame_W),
@@ -316,7 +311,7 @@ def detect():
                 cv2.FONT_HERSHEY_SIMPLEX, 0.9,
                 (0, 0, 255), 2, cv2.LINE_AA)
 
-                cv2.rectangle(frame, 
+                cv2.rectangle(frame,
                 (int((float(xywh5_4R[6:11])*frame_W)-((float(xywh5_4R[18:23])/2)*frame_W)),
                 int((float(xywh5_4R[12:17])*frame_H)-((float(xywh5_4R[24:29])/2)*frame_H)),
                 int((float(xywh5_4R[18:23]))*frame_W),
@@ -328,7 +323,7 @@ def detect():
                 cv2.FONT_HERSHEY_SIMPLEX, 0.9,
                 (0, 0, 255), 2, cv2.LINE_AA)
 
-                cv2.rectangle(frame, 
+                cv2.rectangle(frame,
                 (int((float(xywh5_5R[6:11])*frame_W)-((float(xywh5_5R[18:23])/2)*frame_W)),
                 int((float(xywh5_5R[12:17])*frame_H)-((float(xywh5_5R[24:29])/2)*frame_H)),
                 int((float(xywh5_5R[18:23]))*frame_W),
@@ -340,18 +335,9 @@ def detect():
                 cv2.FONT_HERSHEY_SIMPLEX, 0.9,
                 (0, 0, 255), 2, cv2.LINE_AA)
             else:
-                cv2.rectangle(frame, (0, 0), (640, 480), (0, 255, 0), 3)
-                cv2.putText(frame, loading, (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 0.9,
-                (0, 255, 0), 2, cv2.LINE_AA)
-
-        elif stop_count > 100:
-            cv2.rectangle(frame, (0, 0), (640, 480), (0, 255, 0), 3)
-            cv2.putText(frame, loading, (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 0.9,
-                (0, 255, 0), 2, cv2.LINE_AA)
+                pass
         else:
-            cv2.rectangle(frame, (0, 0), (640, 480), (0, 255, 0), 3)
-            cv2.putText(frame, loading, (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 0.9,
-                (0, 255, 0), 2, cv2.LINE_AA)
+            pass
 
         ret, buffer = cv2.imencode('.jpg', frame)
         frame2 = buffer.tobytes()
