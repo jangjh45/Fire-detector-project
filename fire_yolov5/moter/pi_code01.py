@@ -30,7 +30,7 @@ def temper():
 
         conn.commit()
         print('rowcount: ', cur.rowcount)
-        time.sleep(2)
+        time.sleep(1)
 
 def readdb():
     global a

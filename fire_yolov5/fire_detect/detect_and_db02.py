@@ -21,7 +21,7 @@ def fire_num():
                            user='fire',
                            password='0000',
                            charset='utf8',
-                           db='fire_detect')           
+                           db='fire_detect')         
     cur = conn.cursor()
     
     fire_count = 0
@@ -44,12 +44,14 @@ def fire_num():
             break
 
     while(True):
-        time.sleep(0.1)
-        label_list = sorted(glob.glob(txt_PATH), key=os.path.getctime, reverse=True)
-        first_list = label_list[0]
-        time.sleep(1)
-        label_list2 = sorted(glob.glob(txt_PATH), key=os.path.getctime, reverse=True)
-        second_list = label_list2[0]    
+        try:
+            label_list = sorted(glob.glob(txt_PATH), key=os.path.getctime, reverse=True)
+            first_list = label_list[0]
+            time.sleep(1)
+            label_list2 = sorted(glob.glob(txt_PATH), key=os.path.getctime, reverse=True)
+            second_list = label_list2[0]
+        except:
+            pass
         
         with open(first_list) as a:   
             txt_len = len(a.readlines())
