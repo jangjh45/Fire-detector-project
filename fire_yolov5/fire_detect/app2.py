@@ -23,7 +23,7 @@ def index():
             status = "오류"
         else:
             status = "정상"
-        return render_template("index.html", T=record[1], H=record[2], S=status)
+        return render_template("index2.html", T=record[1], H=record[2], S=status)
 
 
 @app2.route("/video_feed")
