@@ -1,3 +1,4 @@
+from asyncio import threads
 import threading
 from flask import Flask, Response, render_template
 from detect_and_db02 import detect, fire_num
@@ -35,4 +36,4 @@ def video_feed():
 if __name__== "__main__":
     thread1 = threading.Thread(target=fire_num)
     thread1.start()
-    app2.run(host="0.0.0.0", port="50050")
+    app2.run(host="0.0.0.0", port="50050", debug=True)
