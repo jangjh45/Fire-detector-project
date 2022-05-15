@@ -41,11 +41,14 @@
 
         .container_headline {
             display: flex;
-            /*border:1px solid red;*/
-            top: -5%;
-            height: 30%;
-            align-items: center;
-            position: absolute;
+            font-size: 16px;
+            text-align: auto;
+            top: 0%;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 10px;
         }
 
         svg {
@@ -53,7 +56,7 @@
             font: 8em 'Montserrat';
             width: 100%;
             height: 300px;
-            margin: 0 auto;
+            margin: 0;
         }
 
         .text-copy {
@@ -93,17 +96,16 @@
         /* 비디오 박스 효과 */
         .container_video_box {
             position: absolute;
-            top: 80%;
+            top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 1000px;
-            height: 600px;
+            width: 800px;
+            height: 800px;
         }
         .container_video_box::after {
             width: 100%;
             height: 100%;
             content: "";
-            /*background-color: gray;*/
             position: absolute;
             top: 0;
             left: 0;
@@ -116,31 +118,30 @@
         }
         /* 그래프 박스 효과 */
         .container_psition {
-            content: "";
-            margin-left: 70%;
+            position: relative;
+            top: 0%;
+            left: 0%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            z-index: 1;
         }
 
         /* 그래프 박스 효과 */
         .container_box {
             position: relative;
-            top: 170%;
-            left: 50%;
+            top: 0%;
+            left: 0%;
             transform: translate(-50%, -50%);
-            width: 1000px;
-            height: 600px;
             text-align: center;
             z-index: 1;
             }
         .container_box::after {
-            width: 100%;
-            height: 100%;
-            content: "";
-            /*background-color: gray;*/
-            position: absolute;
-            top: 0;
-            left: 0;
-            z-index: -1;
-            opacity: 0.1;
+            position: relative;
+            top: 0%;
+            left: 0%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            z-index: 1;
         }
 
         /* 서브타이틀 효과 */
@@ -154,40 +155,39 @@
     <title>실시간 화재 감지</title>
 </head>
 <body>
-    <div class="container_headline">
+    <head class="container_headline">
         <svg viewBox="0 0 1440 300">
-          <symbol id="s-text">
-            <text text-anchor="middle" x="50%" y="80%">Fire Detection CCTV</text>
-          </symbol>
+            <symbol id="s-text">
+            <text text-anchor="middle" x="50%" y="50%">Fire Detection CCTV</text>
+            </symbol>
 
-          <g class = "g-ants">
+            <g class = "g-ants">
             <use xlink:href="#s-text" class="text-copy"></use>
             <use xlink:href="#s-text" class="text-copy"></use>
             <use xlink:href="#s-text" class="text-copy"></use>
             <use xlink:href="#s-text" class="text-copy"></use>
             <use xlink:href="#s-text" class="text-copy"></use>
-          </g>
+            </g>
         </svg>
-    </div>
-
-    <div class="container_video_box">
+    </head>
+    <video class="container_video_box">
         <img src="{{ url_for('video_feed') }}">
-        <div class="container_psition">
-            <iframe src="http://20.194.30.39:3000/d-solo/l2uY4yQ7z/mysql?orgId=1&from=1651845847000&to=1652402155000&theme=dark&panelId=6" width="250" height="200" frameborder="0"></iframe>
-            <iframe src="http://20.194.30.39:3000/d-solo/l2uY4yQ7z/mysql?orgId=1&from=1651845847000&to=1652402155000&theme=dark&panelId=8" width="250" height="200" frameborder="0"></iframe>
-            <iframe src="http://20.194.30.39:3000/d-solo/l2uY4yQ7z/mysql?orgId=1&from=1651845847000&to=1652402155000&theme=dark&panelId=10" width="250" height="200" frameborder="0"></iframe>
+    </video>
+    <psition class="container_psition">
+        <h1>실시간 탐지 데이터</h1>
+        <div style="margin: 10px; padding: 10px;">
+        <iframe src="http://20.194.30.39:3000/d-solo/l2uY4yQ7z/mysql?orgId=1&from=1651845847000&to=1652402155000&theme=dark&panelId=6" width="250" height="200" frameborder="0"></iframe>
+        <iframe src="http://20.194.30.39:3000/d-solo/l2uY4yQ7z/mysql?orgId=1&from=1651845847000&to=1652402155000&theme=dark&panelId=8" width="250" height="200" frameborder="0"></iframe>
+        <iframe src="http://20.194.30.39:3000/d-solo/l2uY4yQ7z/mysql?orgId=1&from=1651845847000&to=1652402155000&theme=dark&panelId=10" width="250" height="200" frameborder="0"></iframe>
+    </psition>
+    <box class="container_box">
+        <h1>일간 탐지 데이터</h1>
+        <div style="margin: 10px; padding: 10px;"><!--일간 화재 감지 횟수-->
+            <iframe src="http://20.194.30.39:3000/d-solo/l2uY4yQ7z/mysql?orgId=1&from=1651845847000&to=1652402155000&theme=dark&panelId=2" width="900" height="500" frameborder="0"></iframe>
         </div>
-    </div>
-
-
-        <div class="container_box">
-            <h1>일간 탐지 데이터</h1>
-            <div style="margin: 10px; padding: 10px;"><!--일간 화재 감지 횟수-->
-                <iframe src="http://20.194.30.39:3000/d-solo/l2uY4yQ7z/mysql?orgId=1&from=1651845847000&to=1652402155000&theme=dark&panelId=2" width="800" height="600" frameborder="0"></iframe>
-            </div>
-
-            <div style="margin: 10px; padding: 10px;"><!--일간 온습도 측정-->
-            <iframe src="http://20.194.30.39:3000/d-solo/l2uY4yQ7z/mysql?orgId=1&from=1651845847000&to=1652402155000&theme=dark&panelId=4" width="800" height="600" frameborder="0"></iframe>
-            </div>
+        <div style="margin: 10px; padding: 10px;"><!--일간 온습도 측정-->
+            <iframe src="http://20.194.30.39:3000/d-solo/l2uY4yQ7z/mysql?orgId=1&from=1651845847000&to=1652402155000&theme=dark&panelId=4" width="900" height="500" frameborder="0"></iframe>
+        </div>
+    </box>
 </body>
 </html>
