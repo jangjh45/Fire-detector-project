@@ -95,27 +95,32 @@
 
         /* 비디오 박스 효과 */
         .container_video_box {
-            position: absolute;
-            top: 50%;
-            left: 50%;
+            position: relative;
+            top: 0%;
+            left: 0%;
             transform: translate(-50%, -50%);
-            width: 800px;
-            height: 800px;
+            width: 640px;
+            height: 480px;
+            text-align: center;
+            z-index: 1;
         }
         .container_video_box::after {
-            width: 100%;
-            height: 100%;
+            width: 0%;
+            height: 0%;
             content: "";
-            position: absolute;
+            position: relative;
             top: 0;
             left: 0;
-            z-index: -1;
+            transform: translate(-50%, -50%);
             opacity: 0.1;
+            text-align: center;
+            z-index: 1;
         }
-        img{
+        .img{
             border-style: hidden;
             border-radius: 1px;
         }
+
         /* 그래프 박스 효과 */
         .container_psition {
             position: relative;
@@ -170,9 +175,11 @@
             </g>
         </svg>
     </head>
-    <video class="container_video_box">
-        <img src="{{ url_for('video_feed') }}">
-    </video>
+    <videobox class="container_video_box">
+        <h1>실시간 영상</h1>
+        <div style="margin: 10px; padding: 10px;">
+        <img src="{{ url_for('video_feed') }}" width="700" height="500" frameborder="0"></img>
+    </videobox>
     <psition class="container_psition">
         <h1>실시간 탐지 데이터</h1>
         <div style="margin: 10px; padding: 10px;">

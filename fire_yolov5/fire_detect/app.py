@@ -1,12 +1,12 @@
 import threading
 from flask import Flask, Response, render_template
-from detect_and_db01 import detect, fire_num
+from detect_and_db02 import detect, fire_num
 
 app = Flask(__name__)
 
 @app.route("/")
 def index():
-    return render_template("index.html")
+    return render_template("index2.html")
 
 @app.route('/video_feed')
 def video_feed():
