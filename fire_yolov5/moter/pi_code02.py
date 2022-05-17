@@ -60,10 +60,10 @@ def uart():
     
     while True:
         if a == 0:
-                ser.write('go'.encode('utf-8'))
+                ser.write('g'.encode('utf-8'))
                 time.sleep(stop)
         else:
-            ser.write('stop'.encode('utf-8'))
+            ser.write('s'.encode('utf-8'))
             time.sleep(stop)
 
 if __name__=="__main__":
