@@ -53,7 +53,7 @@ def readdb():
 
 def uart():
     global a
-    stop = 1
+    stop = 0.5
     ser = serial.Serial(port = '/dev/ttyAMA0',
                     baudrate = 9600,
                     timeout = 1)
@@ -61,9 +61,17 @@ def uart():
     while True:
         if a == 0:
                 ser.write('g'.encode('utf-8'))
+<<<<<<< Updated upstream
                 time.sleep(stop)
         else:
             ser.write('s'.encode('utf-8'))
+=======
+                ser.readall()
+                time.sleep(stop)
+        else:
+            ser.write('s'.encode('utf-8'))
+            ser.readall()
+>>>>>>> Stashed changes
             time.sleep(stop)
 
 if __name__=="__main__":
