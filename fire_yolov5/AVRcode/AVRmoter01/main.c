@@ -63,8 +63,16 @@ int main(void)
 			UART_transmit(data);
 			index = 0;
 		}
+		else if(strcmp(buffer, "s") == 0){
+			UART_transmit(data);
+			PORTB = (0x04) | (0x08);
+			_delay_ms(200);
+			PORTB = 0x00;
+			index = 0;
+		}
 		else{
-			UART_transmit(data);	
+			UART_transmit(data);
+			index = 0;
 		}
 	}
 }
