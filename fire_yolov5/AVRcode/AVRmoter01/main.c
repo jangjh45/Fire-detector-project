@@ -21,7 +21,8 @@ void INIT_TIMER1(void)
 	TCCR1B |= (1 << CS11);		// 분주율 8, 2MHz
 	TCCR1A |= (1 << COM1A1);		// 비반전 모드
 	ICR1 = 40000;				// 20ms 주기
-	DDRB = 0x02;
+	DDRB = 0xFF;
+	PORTB = 0x00;
 }
 
 int main(void)
