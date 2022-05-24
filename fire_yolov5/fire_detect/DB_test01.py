@@ -15,7 +15,7 @@ conn = pymysql.connect(host='20.39.201.16',
                        charset='utf8',
                        db='fire_detect') #DB 연결
                         
-cur = conn.cursor() #디폴트 커서 생성
+cur = conn.cursor() #연결한 DB와 상호작용하기 위해 cursor 객체를 생성
 
 dir_PATH = 'C:/yolov5-master/runs'
 labels_PATH = 'C:/yolov5-master/runs/detect/exp/labels'
